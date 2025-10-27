@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -42,20 +43,21 @@ public class Cliente {
    @JoinColumn (name = "sede_operativa_id")
    private Indirizzo sedeOperativa;
 
-    public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate dataUltimoContatto, LocalDate dataInserimento, double fatturatoAnnuale, String pec, String telefono, String emailContatto, String nomeContatto, String cognomeContatto, String telefonoContatto, String logoAziendale, Indirizzo sedeLegale, TipoCliente tipoCliente, Indirizzo sedeOperativa) {
+    public Cliente(String ragioneSociale, String partitaIva, String email, String pec, String telefono, String emailContatto, String nomeContatto,
+                   String cognomeContatto, String telefonoContatto,TipoCliente tipoCliente, Indirizzo sedeLegale, Indirizzo sedeOperativa) {
         this.ragioneSociale = ragioneSociale;
         this.partitaIva = partitaIva;
         this.email = email;
-        this.dataUltimoContatto = dataUltimoContatto;
-        this.dataInserimento = dataInserimento;
-        this.fatturatoAnnuale = fatturatoAnnuale;
+        this.dataUltimoContatto = LocalDate.now();
+        this.dataInserimento = LocalDate.now();
+        this.fatturatoAnnuale = 0;
         this.pec = pec;
         this.telefono = telefono;
         this.emailContatto = emailContatto;
         this.nomeContatto = nomeContatto;
         this.cognomeContatto = cognomeContatto;
         this.telefonoContatto = telefonoContatto;
-        this.logoAziendale = logoAziendale;
+        this.logoAziendale = "https://ui-avatars.com/api/?name=" + ragioneSociale;
         this.sedeLegale = sedeLegale;
         this.tipoCliente = tipoCliente;
         this.sedeOperativa = sedeOperativa;

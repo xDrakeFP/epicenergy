@@ -1,6 +1,9 @@
 package gruppo1.epicenergy.controllers;
 
+import gruppo1.epicenergy.entities.Cliente;
 import gruppo1.epicenergy.payloads.clienti.*;
+import gruppo1.epicenergy.services.ClienteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,32 +13,38 @@ import java.util.UUID;
 @RequestMapping("/client")
 public class ClientiController {
 
+    @Autowired
+    private ClienteService clienteService;
+
     @GetMapping
     public String getAll (){
         return "TUTTI I CLIENTI";
     }
 
     @GetMapping("/{id}")
-    public UUID findById(@PathVariable UUID id){
-        return id;
+    public Cliente findById(@PathVariable UUID id){
+        return clienteService.getClienteById(id);
     }
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public String create(ClienteDTO body){
-        return body.string();
+    public Cliente create(@RequestBody ClienteDTO body){
+        return clienteService.createCliente(body);
+    }
+
+    @PutMapping("/{id}")
+    public Cliente update(@PathVariable UUID id, @RequestBody ClienteDTO body){
+
+
+        return clienteService.updateCliente(id, body);
     }
 
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String delete(){
-        return "CANCELLATO";
+    public void delete(@PathVariable UUID id){
+        clienteService.deleteCliente(id);
     }
 
-    @PutMapping("/{id}")
-    public String update(){
-        return "MODIFICATO";
-    }
 
     // Ordinati in base al parametro che gli passiamo (Page)
     @GetMapping("/sort-by")

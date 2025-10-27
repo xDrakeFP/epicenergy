@@ -6,10 +6,11 @@ import java.util.List;
 
 @Getter
 public class ValidationException extends RuntimeException {
-    private List<String> errorsMessages;
+    private List<String> errors;
+    public ValidationException(List<String> errors) {
+        super("Trovati i seguenti errori nella validazione");
+        this.errors = errors;
+    }
 
-    public ValidationException(List<String> errorsMessages) {
-        super("Ci sono stati errori di validazione");
-        this.errorsMessages = errorsMessages;
     }
 }
