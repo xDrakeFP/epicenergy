@@ -43,11 +43,12 @@ public class Cliente {
    @JoinColumn (name = "sede_operativa_id")
    private Indirizzo sedeOperativa;
 
-    public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate dataUltimoContatto, LocalDate dataInserimento, double fatturatoAnnuale, String pec, String telefono, String emailContatto, String nomeContatto, String cognomeContatto, String telefonoContatto, String logoAziendale, Indirizzo sedeLegale, TipoCliente tipoCliente, Indirizzo sedeOperativa) {
+    public Cliente(String ragioneSociale, String partitaIva, String email, String pec, String telefono, String emailContatto, String nomeContatto,
+                   String cognomeContatto, String telefonoContatto,TipoCliente tipoCliente, Indirizzo sedeLegale, Indirizzo sedeOperativa) {
         this.ragioneSociale = ragioneSociale;
         this.partitaIva = partitaIva;
         this.email = email;
-        this.dataUltimoContatto = dataUltimoContatto;
+        this.dataUltimoContatto = LocalDate.now();
         this.dataInserimento = LocalDate.now();
         this.fatturatoAnnuale = 0;
         this.pec = pec;
@@ -56,7 +57,7 @@ public class Cliente {
         this.nomeContatto = nomeContatto;
         this.cognomeContatto = cognomeContatto;
         this.telefonoContatto = telefonoContatto;
-        this.logoAziendale = logoAziendale;
+        this.logoAziendale = "https://ui-avatars.com/api/?name=" + ragioneSociale;
         this.sedeLegale = sedeLegale;
         this.tipoCliente = tipoCliente;
         this.sedeOperativa = sedeOperativa;

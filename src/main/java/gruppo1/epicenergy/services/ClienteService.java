@@ -1,6 +1,7 @@
 package gruppo1.epicenergy.services;
 
 import gruppo1.epicenergy.entities.Cliente;
+import gruppo1.epicenergy.entities.Indirizzo;
 import gruppo1.epicenergy.exceptions.NotFoundException;
 import gruppo1.epicenergy.payloads.clienti.ClienteDTO;
 import gruppo1.epicenergy.repositories.ClienteRepository;
@@ -10,17 +11,26 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.UUID;
 
 @Service
 public class ClienteService {
     @Autowired
+    private IndirizzoService indirizzoService;
+    @Autowired
     private ClienteRepository clienteRepository;
 
     // Crea
-    public Cliente createCliente(Cliente cliente){
-        return clienteRepository.save(cliente);
+
+    public Cliente createCliente(ClienteDTO cliente){
+        Indirizzo sedeLegale = indirizzoService.findById(cliente.sedeLegaleId());
+        Indirizzo sedeOperativa = indirizzoService.findById(cliente.sedeOperativaId());
+        Cliente newCliente = new Cliente(cliente.ragioneSociale(), cliente.partitaIva(), cliente.email(), cliente.pec(), cliente.telefono(),
+                cliente.emailContatto(), cliente.nomeContatto(), cliente.cognomeContatto(), cliente.telefonoContatto(),
+                cliente.tipoCliente(), sedeLegale, sedeOperativa);
+        return clienteRepository.save(newCliente);
     }
 
     // Ritorna il singolo cliente
