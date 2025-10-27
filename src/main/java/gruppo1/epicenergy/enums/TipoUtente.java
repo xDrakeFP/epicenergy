@@ -1,4 +1,4 @@
-package gruppo1.epicenergy.entities.enums;
+package gruppo1.epicenergy.enums;
 
 public enum TipoUtente {
     USER, ADMIN

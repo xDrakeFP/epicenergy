@@ -1,7 +1,7 @@
 package gruppo1.epicenergy.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import gruppo1.epicenergy.entities.enums.TipoUtente;
+import gruppo1.epicenergy.enums.TipoUtente;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
