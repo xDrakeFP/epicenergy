@@ -33,16 +33,26 @@ public class Utente implements UserDetails {
     @Enumerated(EnumType.STRING)
     private TipoUtente tipo;
 
-    //COSTRUTTORE
+    // COSTRUTTORE
 
-    public Utente(String username, String email, String password, String nome, String cognome) {
+//    public Utente(String username, String email, String password, String nome, String cognome) {
+//        this.username = username;
+//        this.email = email;
+//        this.password = password;
+//        this.nome = nome;
+//        this.cognome = cognome;
+//        this.avatar = "https://ui-avatars.com/api/?name=" + nome + "+" + cognome; //AVATAR CON INIZIALI
+//        this.tipo = TipoUtente.USER; //DEFAULT USER NORMALE
+//    }
+
+    public Utente(String username, String email, String password, String nome, String cognome, TipoUtente tipo) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.nome = nome;
         this.cognome = cognome;
+        this.tipo = tipo;
         this.avatar = "https://ui-avatars.com/api/?name=" + nome + "+" + cognome; //AVATAR CON INIZIALI
-        this.tipo = TipoUtente.USER; //DEFAULT USER NORMALE
     }
 
     @Override
@@ -52,6 +62,6 @@ public class Utente implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 }

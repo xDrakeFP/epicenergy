@@ -2,14 +2,17 @@ package gruppo1.epicenergy.services;
 
 
 import gruppo1.epicenergy.entities.Utente;
+import gruppo1.epicenergy.exceptions.AlreadyExistingException;
 import gruppo1.epicenergy.exceptions.NotFoundException;
 import gruppo1.epicenergy.payloads.utenti.NewUtenteDTO;
 import gruppo1.epicenergy.repositories.UtenteRepository;
+import gruppo1.epicenergy.payloads.auth.UtenteDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -19,11 +22,8 @@ public class UtenteService {
     @Autowired
     private UtenteRepository utenteRepository;
 
-    //NUOVO UTENTE
-    public Utente newUtente(NewUtenteDTO body) {
-        Utente newUtente = new Utente(body.username(), body.email(), body.password(), body.nome(), body.cognome());
-        return utenteRepository.save(newUtente);
-    }
+    @Autowired
+    private PasswordEncoder bcrypt;
 
     //CERCA UTENTE TRAMITE ID
     public Utente findById(UUID id) {
@@ -48,16 +48,27 @@ public class UtenteService {
         utenteRepository.delete(utenteDaEliminare);
     }
 
+    public Utente findByEmail(String email){
+        return this.utenteRepository.findByEmail(email).orElseThrow(()-> new NotFoundException("Nessun utente trovato con l'email indicata"));
+    }
+
+    public Utente findByUsername(String username){
+        return this.utenteRepository.findByUsername(username).orElseThrow(()-> new NotFoundException("Nessun utente trovato con l'email indicata"));
+    }
+
+    public Utente registerUser(UtenteDTO body) {
+        if (this.utenteRepository.existsByUsername(body.username()))
+            throw new AlreadyExistingException("L'username indicato è già in uso");
+        if (this.utenteRepository.existsByEmail(body.email()))
+            throw new AlreadyExistingException("L'email indicata è già in uso");
+        Utente utente = new Utente(body.username(), body.email(), bcrypt.encode(body.password()), body.nome(), body.cognome(), body.tipo());
+        return this.utenteRepository.save(utente);
+    }
+
     //TUTTI GLI UTENTI (PAGINATI)
     public Page<Utente> findAll(int pageNumber, int pageSize, String sortBy) {
         if (pageSize > 15) pageSize = 15;
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).ascending());
         return utenteRepository.findAll(pageable);
-    }
-
-    //RICERCA TRAMITE EMAIL
-    public Utente findByEmail(String email) {
-        Utente utenteTrovato = utenteRepository.findByEmail(email);
-        return utenteTrovato;
     }
 }
