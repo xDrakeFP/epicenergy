@@ -10,7 +10,7 @@ import java.util.UUID;
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -34,15 +34,30 @@ public class Cliente {
     @Enumerated(EnumType.STRING)
     private TipoCliente tipoCliente;
 
-   // @OneToOne
-   // @JoinColumn (name = "sede_legale", nullable = false)
-   // private Indirizzo sedeLegale;
+   @OneToOne
+    @JoinColumn (name = "sede_legale_id")
+   private Indirizzo sedeLegale;
 
-  //  @OneToOne
- //   @JoinColumn (name = "sede_operativa", nullable = false)
-  //  private Indirizzo sedeOperativa;
+   @OneToOne
+   @JoinColumn (name = "sede_operativa_id")
+   private Indirizzo sedeOperativa;
 
-   // @OneToMany
-  //  @JoinColumn  (name = "cliente_id", nullable = false)
-   // private Fattura fattura;
+    public Cliente(String ragioneSociale, String partitaIva, String email, LocalDate dataUltimoContatto, LocalDate dataInserimento, double fatturatoAnnuale, String pec, String telefono, String emailContatto, String nomeContatto, String cognomeContatto, String telefonoContatto, String logoAziendale, Indirizzo sedeLegale, TipoCliente tipoCliente, Indirizzo sedeOperativa) {
+        this.ragioneSociale = ragioneSociale;
+        this.partitaIva = partitaIva;
+        this.email = email;
+        this.dataUltimoContatto = dataUltimoContatto;
+        this.dataInserimento = dataInserimento;
+        this.fatturatoAnnuale = fatturatoAnnuale;
+        this.pec = pec;
+        this.telefono = telefono;
+        this.emailContatto = emailContatto;
+        this.nomeContatto = nomeContatto;
+        this.cognomeContatto = cognomeContatto;
+        this.telefonoContatto = telefonoContatto;
+        this.logoAziendale = logoAziendale;
+        this.sedeLegale = sedeLegale;
+        this.tipoCliente = tipoCliente;
+        this.sedeOperativa = sedeOperativa;
+    }
 }
