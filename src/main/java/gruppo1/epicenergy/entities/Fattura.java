@@ -1,6 +1,6 @@
 package gruppo1.epicenergy.entities;
 
-import jakarta.persistence.Column;
+import gruppo1.epicenergy.enums.StatoFattura;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
