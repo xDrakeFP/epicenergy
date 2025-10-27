@@ -7,7 +7,6 @@ import gruppo1.epicenergy.exceptions.NotFoundException;
 import gruppo1.epicenergy.payloads.utenti.NewUtenteDTO;
 import gruppo1.epicenergy.repositories.UtenteRepository;
 import gruppo1.epicenergy.payloads.auth.UtenteDTO;
-import gruppo1.epicenergy.repositories.UtenteRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -50,18 +49,22 @@ public class UtenteService {
     }
 
     public Utente findByEmail(String email){
-        return this.repo.findByEmail(email).orElseThrow(()-> new NotFoundException("Nessun utente trovato con l'email indicata"));
+        return this.utenteRepository.findByEmail(email).orElseThrow(()-> new NotFoundException("Nessun utente trovato con l'email indicata"));
     }
 
     public Utente findByUsername(String username){
-        return this.repo.findByUsername(username).orElseThrow(()-> new NotFoundException("Nessun utente trovato con l'email indicata"));
+        return this.utenteRepository.findByUsername(username).orElseThrow(()-> new NotFoundException("Nessun utente trovato con l'email indicata"));
     }
 
-    public Utente registerUser(UtenteDTO body){
-        if(this.repo.existsByUsername(body.username())) throw new AlreadyExistingException("L'username indicato è già in uso");
-        if(this.repo.existsByEmail(body.email())) throw new AlreadyExistingException("L'email indicata è già in uso");
-        Utente utente = new Utente(body.username(), body.email(), bcrypt.encode(body.password()),body.nome(), body.cognome(), body.tipo());
-        return this.repo.save(utente);
+    public Utente registerUser(UtenteDTO body) {
+        if (this.utenteRepository.existsByUsername(body.username()))
+            throw new AlreadyExistingException("L'username indicato è già in uso");
+        if (this.utenteRepository.existsByEmail(body.email()))
+            throw new AlreadyExistingException("L'email indicata è già in uso");
+        Utente utente = new Utente(body.username(), body.email(), bcrypt.encode(body.password()), body.nome(), body.cognome(), body.tipo());
+        return this.utenteRepository.save(utente);
+    }
+
     //TUTTI GLI UTENTI (PAGINATI)
     public Page<Utente> findAll(int pageNumber, int pageSize, String sortBy) {
         if (pageSize > 15) pageSize = 15;

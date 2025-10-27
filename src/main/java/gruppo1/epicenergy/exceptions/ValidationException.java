@@ -11,6 +11,4 @@ public class ValidationException extends RuntimeException {
         super("Trovati i seguenti errori nella validazione");
         this.errors = errors;
     }
-
-    }
 }
