@@ -7,13 +7,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Jwts;
 
-import java.security.Key;
 import java.util.Date;
 import java.util.UUID;
 
 @Component
 public class JWTTools {
-    @Value("{jwt.secret}")
+    @Value("${jwt.secret}")
     private String secret;
 
     public String createToken (Utente utente){
