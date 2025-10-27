@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -47,8 +48,8 @@ public class Cliente {
         this.partitaIva = partitaIva;
         this.email = email;
         this.dataUltimoContatto = dataUltimoContatto;
-        this.dataInserimento = dataInserimento;
-        this.fatturatoAnnuale = fatturatoAnnuale;
+        this.dataInserimento = LocalDate.now();
+        this.fatturatoAnnuale = 0;
         this.pec = pec;
         this.telefono = telefono;
         this.emailContatto = emailContatto;
