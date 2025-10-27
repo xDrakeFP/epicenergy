@@ -27,12 +27,6 @@ public class UtentiController {
         return utenteService.findById(id);
     }
 
-    @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Utente create(@RequestBody NewUtenteDTO body) {
-        return utenteService.newUtente(body);
-    }
-
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable UUID id) {
