@@ -2,9 +2,7 @@ package gruppo1.epicenergy.entities;
 
 import gruppo1.epicenergy.enums.TipoCliente;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -16,6 +14,7 @@ import java.util.UUID;
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Setter(AccessLevel.NONE)
     private UUID id;
 
     private String ragioneSociale;
@@ -31,6 +30,7 @@ public class Cliente {
     private String cognomeContatto;
     private String telefonoContatto;
     private String logoAziendale;
+
     @Enumerated(EnumType.STRING)
     private TipoCliente tipoCliente;
 
