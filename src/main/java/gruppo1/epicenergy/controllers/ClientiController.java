@@ -4,9 +4,12 @@ import gruppo1.epicenergy.entities.Cliente;
 import gruppo1.epicenergy.payloads.clienti.*;
 import gruppo1.epicenergy.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @RestController
@@ -48,32 +51,37 @@ public class ClientiController {
 
     // Ordinati in base al parametro che gli passiamo (Page)
     @GetMapping("/sort-by")
-    public String sortByParameter(){
-        return "ORDINATI IN BASE AL PARAMETRO";
+    public Page<Cliente> sortByParameter(@RequestParam int pageNumber,@RequestParam int pageSize,@RequestParam String sortBy, @RequestParam String orderBy){
+        return clienteService.findAll(pageNumber, pageSize, sortBy, orderBy);
+    }
+
+    // Filtrati per nome
+    @GetMapping("/search-by-name")
+    public Page<Cliente> findByNomeContattoStartingWith(@RequestParam String nome, @RequestParam int pageNumber, @RequestParam int pageSize,
+                                                        @RequestParam String sortBy){
+        return clienteService.findByNomeContattoStartingWith(nome, pageNumber, pageSize, sortBy);
     }
 
     // Filtrati per fatturato annuale
     @GetMapping("/sales")
-    public String findBySales(ClientePerFatturatoDTO body){
-        return body.string();
+    public Page<Cliente> findByFatturatoAnnuale(@RequestParam double fatturato, @RequestParam int pageNumber, @RequestParam int pageSize,
+                                     @RequestParam String sortBy){
+        return clienteService.findByFatturatoAnnuale(fatturato, pageNumber, pageSize, sortBy);
     }
-
     // Filtrati per data di inserimento
     @GetMapping("/addition")
-    public String findByAdditionDate(ClientePerInserimentoDTO body){
-        return body.string();
+    public Page<Cliente> findByDataInserimento(@RequestParam LocalDate dataInserimento, @RequestParam int pageNumber, @RequestParam int pageSize,
+                                               @RequestParam String sortBy){
+        return clienteService.findByDataInserimento(dataInserimento, pageNumber, pageSize, sortBy);
     }
 
     // Filtrati per data ultimo contatto
     @GetMapping("/last-contact")
-    public String findByLastContactDate(ClientePerUltimoContattoDTO body){
-        return body.string();
+    public Page<Cliente> findByDataUltimoContatto(@RequestParam LocalDate dataUltimoContatto, @RequestParam int pageNumber, @RequestParam int pageSize,
+                                                    @RequestParam String sortBy){
+        return clienteService.findByDataUltimoContatto(dataUltimoContatto, pageNumber, pageSize, sortBy);
     }
 
-    // Filtrati per parte del nome
-    @GetMapping("/part-of-name")
-    public String findByPartOfName(ClientePerNomeDTO body){
-        return  body.string();
-    }
+
 
 }

@@ -13,6 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -38,9 +40,35 @@ public class ClienteService {
         return clienteRepository.findById(id)
                 .orElseThrow(()-> new NotFoundException("Cliente " + id + " non trovato"));
     }
+
+    // Ritorna filtraggio per nome
+    public Page<Cliente> findByNomeContattoStartingWith(String nome, int pageNumber, int pageSize, String sortBy) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        return clienteRepository.findByNomeContattoStartingWith(nome, pageable);
+    }
+    // Ritorna filtraggio per data inserimento
+    public Page<Cliente> findByDataInserimento(LocalDate dataInserimento,int pageNumber, int pageSize, String sortBy ){
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        return clienteRepository.findByDataInserimento(dataInserimento, pageable);
+    }
+    // Ritorna filtraggio per ultimo contatto
+    public Page<Cliente> findByDataUltimoContatto(LocalDate dataUltimoContatto, int pageNumber, int pageSize, String sortBy){
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        return clienteRepository.findByDataUltimoContatto(dataUltimoContatto, pageable);
+    }
+    // Ritorna filtraggio by fatturato
+    public Page <Cliente> findByFatturatoAnnuale(double fatturato, int pageNumber, int pageSize, String sortBy){
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        return clienteRepository.findByFatturatoAnnuale(fatturato, pageable);
+    }
+
      // Lista di clienti
-    public Page<Cliente> findAll(int pageNumber, int pageSize, String sortBy){
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).ascending());
+    public Page<Cliente> findAll(int pageNumber, int pageSize, String sortBy, String orderBy){
+        Sort sort = Sort.by(sortBy).descending();
+        if (Objects.equals(orderBy, "asc")){
+             sort = Sort.by(sortBy).ascending();
+        }
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         return clienteRepository.findAll(pageable);
     }
 
