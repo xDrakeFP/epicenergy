@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 public class ClientiController {
 
     @GetMapping
-    public String findAll (){
+    public String getAll (){
         return "TUTTI I CLIENTI";
     }
 
@@ -30,27 +30,57 @@ public class ClientiController {
         return "MODIFICATO";
     }
 
-    // Fatturato annuale
+    // Ordinati per nome
+    @GetMapping("/by-name")
+    public String sortByName(){
+        return "ORDINATI IN ORDINE ALFABETICO";
+    }
+
+    // Ordinati per fatturato annuale
+    @GetMapping("/by-sales")
+    public String sortBySales(){
+        return "ORDINATI PER FATTURATO ANNUALE";
+    }
+
+    // Ordinati per data di inserimento
+    @GetMapping("/by-addition")
+    public String sortByAdditionDate(){
+        return "ORDINATI PER DATA D'INSERIMENTO";
+    }
+
+    // Ordinati per data ultimo contatto
+    @GetMapping("/by-last-contact")
+    public String sortByLastContact(){
+        return "ORDINATI PER DATA ULTIMO CONTATTO";
+    }
+
+    //Ordinati per provincia della sede legale
+    @GetMapping("/by-province")
+    public String sortByProvince(){
+        return "ORDINATI PER PROVINCIA";
+    }
+
+    // Filtrati per fatturato annuale
     @GetMapping("/sales")
-    public String getBySales(ClientePerFatturatoDTO body){
+    public String findBySales(ClientePerFatturatoDTO body){
         return body.string();
     }
 
-    // Data di inserimento
+    // Filtrati per data di inserimento
     @GetMapping("/addition")
-    public String getByAdditionDate(ClientePerInserimentoDTO body){
+    public String findByAdditionDate(ClientePerInserimentoDTO body){
         return body.string();
     }
 
-    // Data ultimo contatto
+    // Filtrati per data ultimo contatto
     @GetMapping("/last-contact")
-    public String getByLastContactDate(ClientePerUltimoContattoDTO body){
+    public String findByLastContactDate(ClientePerUltimoContattoDTO body){
         return body.string();
     }
 
-    // Parte del nome
-    @GetMapping("/names")
-    public String getByName(ClientePerNomeDTO body){
+    // Filtrati per parte del nome
+    @GetMapping("/part-of-name")
+    public String findByPartOfName(ClientePerNomeDTO body){
         return  body.string();
     }
 
