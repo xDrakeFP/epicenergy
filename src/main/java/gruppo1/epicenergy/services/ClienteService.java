@@ -1,6 +1,7 @@
 package gruppo1.epicenergy.services;
 
 import gruppo1.epicenergy.entities.Cliente;
+import gruppo1.epicenergy.exceptions.NotFoundException;
 import gruppo1.epicenergy.payloads.clienti.ClienteDTO;
 import gruppo1.epicenergy.repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class ClienteService {
     // Ritorna il singolo cliente
     public Cliente getClienteById(UUID id){
         return clienteRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Cliente " + id + " non trovato"));
+                .orElseThrow(()-> new NotFoundException("Cliente " + id + " non trovato"));
     }
      // Lista di clienti
     public Page<Cliente> findAll(int pageNumber, int pageSize, String sortBy){
