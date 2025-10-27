@@ -4,8 +4,10 @@ import gruppo1.epicenergy.payloads.clienti.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
-@RequestMapping("/clients")
+@RequestMapping("/client")
 public class ClientiController {
 
     @GetMapping
@@ -13,51 +15,32 @@ public class ClientiController {
         return "TUTTI I CLIENTI";
     }
 
+    @GetMapping("/{id}")
+    public UUID findById(@PathVariable UUID id){
+        return id;
+    }
+
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public String createClient(ClienteDTO body){
+    public String create(ClienteDTO body){
         return body.string();
     }
 
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String deleteClient(){
+    public String delete(){
         return "CANCELLATO";
     }
 
     @PutMapping("/{id}")
-    public String updateClient(){
+    public String update(){
         return "MODIFICATO";
     }
 
-    // Ordinati per nome
-    @GetMapping("/by-name")
-    public String sortByName(){
-        return "ORDINATI IN ORDINE ALFABETICO";
-    }
-
-    // Ordinati per fatturato annuale
-    @GetMapping("/by-sales")
-    public String sortBySales(){
-        return "ORDINATI PER FATTURATO ANNUALE";
-    }
-
-    // Ordinati per data di inserimento
-    @GetMapping("/by-addition")
-    public String sortByAdditionDate(){
-        return "ORDINATI PER DATA D'INSERIMENTO";
-    }
-
-    // Ordinati per data ultimo contatto
-    @GetMapping("/by-last-contact")
-    public String sortByLastContact(){
-        return "ORDINATI PER DATA ULTIMO CONTATTO";
-    }
-
-    //Ordinati per provincia della sede legale
-    @GetMapping("/by-province")
-    public String sortByProvince(){
-        return "ORDINATI PER PROVINCIA";
+    // Ordinati in base al parametro che gli passiamo (Page)
+    @GetMapping("/sort-by")
+    public String sortByParameter(){
+        return "ORDINATI IN BASE AL PARAMETRO";
     }
 
     // Filtrati per fatturato annuale
