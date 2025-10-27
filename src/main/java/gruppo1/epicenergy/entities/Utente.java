@@ -33,7 +33,7 @@ public class Utente implements UserDetails {
     @Enumerated(EnumType.STRING)
     private TipoUtente tipo;
 
-    //COSTRUTTORE
+    // COSTRUTTORE SENZA INDICARE IL TIPO
 
     public Utente(String username, String email, String password, String nome, String cognome) {
         this.username = username;
@@ -45,6 +45,17 @@ public class Utente implements UserDetails {
         this.tipo = TipoUtente.USER; //DEFAULT USER NORMALE
     }
 
+    // COSTRUTTORE INDICANDO IL TIPO
+
+    public Utente(String username, String email, String password, String nome, String cognome, TipoUtente tipo) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.nome = nome;
+        this.cognome = cognome;
+        this.tipo = tipo;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(tipo.name()));
@@ -52,6 +63,6 @@ public class Utente implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 }
