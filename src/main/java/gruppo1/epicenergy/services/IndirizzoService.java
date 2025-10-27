@@ -1,14 +1,14 @@
 package gruppo1.epicenergy.services;
 
 import gruppo1.epicenergy.entities.Indirizzo;
-import gruppo1.epicenergy.payloads.IndirizzoDTO;
+import gruppo1.epicenergy.payloads.indirizzo.IndirizzoDTO;
 import gruppo1.epicenergy.repositories.IndirizzoRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.NotAcceptableStatusException;
 
 import java.util.UUID;
 
@@ -28,9 +28,8 @@ public class IndirizzoService {
         return this.indirizzoRepository.findAll(pageable);
     }
 
-    //TODO: gestire eccezione not found exception
     public Indirizzo findById(UUID id){
-        return indirizzoRepository.findById(id).orElseThrow();
+        return indirizzoRepository.findById(id).orElseThrow(() -> new NotAcceptableStatusException("L'elemento non è stato trovato."));
     }
 
     public Indirizzo findByIdAndUpdate(UUID id, IndirizzoDTO payload){

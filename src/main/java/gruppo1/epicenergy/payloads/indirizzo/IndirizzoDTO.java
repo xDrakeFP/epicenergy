@@ -1,4 +1,4 @@
-package gruppo1.epicenergy.payloads;
+package gruppo1.epicenergy.payloads.indirizzo;
 
 import gruppo1.epicenergy.entities.ComuneProvincia;
 import jakarta.validation.constraints.NotBlank;
