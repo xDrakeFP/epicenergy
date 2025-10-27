@@ -2,6 +2,7 @@ package gruppo1.epicenergy.services;
 
 
 import gruppo1.epicenergy.entities.Utente;
+import gruppo1.epicenergy.exceptions.NotFoundException;
 import gruppo1.epicenergy.payloads.utenti.NewUtenteDTO;
 import gruppo1.epicenergy.repositories.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class UtenteService {
 
     //CERCA UTENTE TRAMITE ID
     public Utente findById(UUID id) {
-        return utenteRepository.findById(id).orElseThrow(() -> new RuntimeException());//TODO:cambiare con exceptions personalizzate
+        return utenteRepository.findById(id).orElseThrow(() -> new NotFoundException("Utente con id " + id + " non trovato"));//TODO:cambiare con exceptions personalizzate
     }
 
     //MODIFICA UTENTE TODO: SOLO ADMIN E "UTENTE LOGGATO" POSSONON MODIFICARE
