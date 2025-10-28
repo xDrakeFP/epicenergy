@@ -1,70 +1,99 @@
 package gruppo1.epicenergy.controllers;
 
-
 import gruppo1.epicenergy.payloads.fatture.*;
+import gruppo1.epicenergy.entities.StatoFattura;
+import gruppo1.epicenergy.services.FatturaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/invoice")
+@RequestMapping("/api/fatture")
 public class FattureController {
+
+    private final FatturaService service;
+
+    @Autowired
+    public FattureController(FatturaService service) {
+        this.service = service;
+    }
+
     @GetMapping
-    public String getAll (){
-        return "TUTTI LE FATTURE";
+    public Page<FatturaResponseDTO> getAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+        Pageable p = PageRequest.of(page, size);
+        return service.getAll(p);
     }
 
     @GetMapping("/{id}")
-    public UUID findById(@PathVariable UUID id){
-        return id;
+    public ResponseEntity<FatturaResponseDTO> findById(@PathVariable UUID id){
+        try {
+            return ResponseEntity.ok(service.getById(id));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public String create(FatturaDTO body){
-        return body.string();
+    @PostMapping
+    public ResponseEntity<FatturaResponseDTO> create(@RequestBody FatturaDTO body){
+        FatturaResponseDTO created = service.create(body);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @DeleteMapping("/delete/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public String delete(){
-        return "CANCELLATO";
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id){
+        try {
+            service.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/{id}")
-    public String update(){
-        return "MODIFICATO";
+    public ResponseEntity<FatturaResponseDTO> update(@PathVariable UUID id, @RequestBody FatturaDTO body){
+        try {
+            return ResponseEntity.ok(service.update(id, body));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     // Filtrate per cliente
     @GetMapping("/by-client")
-    public String findByClient(FatturaPerClienteDTO body){
-        return body.string();
+    public Page<FatturaResponseDTO> findByClient(@RequestParam UUID clienteId, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+        return service.findByCliente(clienteId, PageRequest.of(page, size));
     }
 
     // Filtrate per stato(enum)
     @GetMapping("/by-state")
-    public String findByState(FatturaPerStatoDTO body) {
-        return body.string();
+    public Page<FatturaResponseDTO> findByState(@RequestParam String stato, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return service.findByStato(stato, PageRequest.of(page, size));
     }
 
     // Filtrate per data
     @GetMapping("/by-date")
-    public String findByDate(FatturaPerStatoDTO body){
-        return body.string();
+    public Page<FatturaResponseDTO> findByDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+        return service.findByDate(data, PageRequest.of(page, size));
     }
 
     // Filtrate per anno
     @GetMapping("/by-year")
-    public String findByYear(FatturaPerAnnoDTO body){
-        return body.string();
+    public Page<FatturaResponseDTO> findByYear(@RequestParam int anno, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+        return service.findByYear(anno, PageRequest.of(page, size));
     }
 
     // Filtrate per range di importi
     @GetMapping("/by-range")
-    public String findByRange(FatturaPerRangeImporti body){
-        return body.string();
+    public Page<FatturaResponseDTO> findByRange(@RequestParam(required = false) Double minImporto, @RequestParam(required = false) Double maxImporto, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
+        return service.findByRange(minImporto, maxImporto, PageRequest.of(page, size));
     }
 
 }

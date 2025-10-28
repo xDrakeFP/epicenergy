@@ -1,4 +1,6 @@
 package gruppo1.epicenergy.payloads.fatture;
 
-public record FatturaPerStatoDTO(String string) {
+import gruppo1.epicenergy.entities.StatoFattura;
+
+public record FatturaPerStatoDTO(StatoFattura stato, int page, int size) {
 }

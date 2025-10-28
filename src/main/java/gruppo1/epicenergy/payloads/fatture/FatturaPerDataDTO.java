@@ -1,4 +1,6 @@
 package gruppo1.epicenergy.payloads.fatture;
 
-public record FatturaPerDataDTO (String string) {
+import java.time.LocalDate;
+
+public record FatturaPerDataDTO(LocalDate data, int page, int size) {
 }

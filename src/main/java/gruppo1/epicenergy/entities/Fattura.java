@@ -6,8 +6,6 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import java.time.LocalDate;
@@ -31,21 +29,20 @@ public class Fattura {
     @Enumerated(EnumType.STRING)
     private StatoFattura stato;
 
-    @ManyToOne
-    @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+    @Column(name = "cliente_id")
+    private UUID clienteId;
 
 
     public Fattura() {
     }
 
-    public Fattura(UUID id, LocalDate data, Double importo, String numero, StatoFattura stato, Cliente cliente) {
+    public Fattura(UUID id, LocalDate data, Double importo, String numero, StatoFattura stato, UUID clienteId) {
         this.id = id;
         this.data = data;
         this.importo = importo;
         this.numero = numero;
         this.stato = stato;
-        this.cliente = cliente;
+        this.clienteId = clienteId;
     }
 
 
@@ -89,12 +86,12 @@ public class Fattura {
         this.stato = stato;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public UUID getClienteId() {
+        return clienteId;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setClienteId(UUID clienteId) {
+        this.clienteId = clienteId;
     }
 
     @Override
@@ -118,7 +115,7 @@ public class Fattura {
                 ", importo=" + importo +
                 ", numero='" + numero + '\'' +
                 ", stato=" + stato +
-                ", cliente=" + (cliente != null ? cliente.getId() : null) +
+                ", clienteId=" + clienteId +
                 '}';
     }
 }

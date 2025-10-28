@@ -5,5 +5,6 @@ import java.util.UUID;
 
 import gruppo1.epicenergy.entities.StatoFattura;
 
-public record FatturaDTO(LocalDate data, Double importo, String numero, StatoFattura stato, UUID clienteId) {
+public record FatturaResponseDTO(UUID id, LocalDate data, Double importo, String numero, StatoFattura stato, UUID clienteId) {
 }
+
