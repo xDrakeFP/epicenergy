@@ -32,8 +32,6 @@ public class FatturaService {
     @Autowired
     StatoFatturaRepository statoFatturaRepository;
     @Autowired
-    StatoFatturaService statoFattura;
-    @Autowired
     public FatturaService(FatturaRepository repository) {
         this.repository = repository;
     }
