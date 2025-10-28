@@ -1,6 +1,6 @@
 package gruppo1.epicenergy.payloads.auth;
 
-import gruppo1.epicenergy.enums.TipoUtente;
+import gruppo1.epicenergy.entities.TipoUtente;
 import jakarta.validation.constraints.*;
 
 public record UtenteDTO (

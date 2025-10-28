@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -37,13 +38,12 @@ public class ClientiController {
 
     @PutMapping("/{id}")
     public Cliente update(@PathVariable UUID id, @RequestBody ClienteDTO body){
-
-
         return clienteService.updateCliente(id, body);
     }
 
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void delete(@PathVariable UUID id){
         clienteService.deleteCliente(id);
     }
