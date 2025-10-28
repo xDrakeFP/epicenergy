@@ -1,9 +1,6 @@
 package gruppo1.epicenergy.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Provincia {
     @Id
-    @GeneratedValue
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
     private String sigla;
     @Column(name = "nome_provincia")
