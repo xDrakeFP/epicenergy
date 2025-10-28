@@ -20,12 +20,7 @@ public class StatoFattura {
     private String statoStr;
 
 
-    @OneToMany
-    @JoinColumn(name = "stato_fattura_id")
-    private Fattura statoFattura;
-
     public StatoFattura(String stato, Fattura statoFattura) {
         this.statoStr = stato;
-        this.statoFattura = statoFattura;
     }
 }

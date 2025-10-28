@@ -12,7 +12,6 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "comuni_province")
 public class Comune {
     @Id
     @GeneratedValue

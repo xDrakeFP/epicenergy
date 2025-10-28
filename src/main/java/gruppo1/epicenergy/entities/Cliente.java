@@ -5,43 +5,47 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
 @Data
 @NoArgsConstructor
-
+@Entity
 public class Cliente {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue
     @Setter(AccessLevel.NONE)
     private UUID id;
-
+    @Column(name = "ragione_sociale")
     private String ragioneSociale;
+    @Column(name = "partita_iva")
     private String partitaIva;
     private String email;
+    @Column(name = "data_inserimento")
     private LocalDate dataInserimento;
+    @Column(name = "data_ultimo_contatto")
     private LocalDate dataUltimoContatto;
+    @Column(name = "fatturato_annuale")
     private double fatturatoAnnuale;
     private String pec;
     private String telefono;
+    @Column(name = "email_contatto")
     private String emailContatto;
+    @Column(name = "nome_contatto")
     private String nomeContatto;
+    @Column(name = "cognome_contatto")
     private String cognomeContatto;
+    @Column(name = "telefono_contatto")
     private String telefonoContatto;
+    @Column(name = "logo_aziendale")
     private String logoAziendale;
-
     @Enumerated(EnumType.STRING)
     private TipoCliente tipoCliente;
-
-   @OneToOne
+    @OneToOne
     @JoinColumn (name = "sede_legale_id")
-   private Indirizzo sedeLegale;
-
-   @OneToOne
-   @JoinColumn (name = "sede_operativa_id")
-   private Indirizzo sedeOperativa;
+    private Indirizzo sedeLegale;
+    @OneToOne
+    @JoinColumn (name = "sede_operativa_id")
+    private Indirizzo sedeOperativa;
 
     public Cliente(String ragioneSociale, String partitaIva, String email, String pec, String telefono, String emailContatto, String nomeContatto,
                    String cognomeContatto, String telefonoContatto,TipoCliente tipoCliente, Indirizzo sedeLegale, Indirizzo sedeOperativa) {
