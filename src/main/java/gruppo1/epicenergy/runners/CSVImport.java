@@ -111,36 +111,25 @@ private List<Comune> loadComuni(String nomeFile, Map<String, Provincia> provinci
             getClass().getClassLoader().getResourceAsStream(nomeFile), StandardCharsets.UTF_8
     ))) {
 
-        // Leggi tutte le righe
         List<String[]> rows = csvReader.readAll();
 
-        // Salta la prima riga (header) e processa i dati
         List<Comune> comuni = new ArrayList<>();
-
         for (int i = 1; i < rows.size(); i++) {
             String[] parts = rows.get(i);
-
             try {
-                // Validazione lunghezza
                 if (parts.length < 4) {
                     System.err.println("⚠️ Riga " + (i + 1) + " malformata (campi insufficienti): " + String.join(",", parts));
                     continue;
                 }
-
-                // Parsing dei campi
                 int codiceComune = Integer.parseInt(parts[0].trim());
                 int codiceProvincia = Integer.parseInt(parts[1].trim());
                 String nomeComune = parts[2].trim();
                 String provinciaNome = parts[3].trim();
-
-                // Cerca la provincia
                 Provincia provincia = provinciaMap.get(provinciaNome);
                 if (provincia == null) {
                     System.err.println("⚠️ Riga " + (i + 1) + " - Provincia non trovata: " + provinciaNome + " (comune: " + nomeComune + ")");
                     continue;
                 }
-
-                // Crea e aggiungi il comune
                 comuni.add(new Comune(codiceComune, codiceProvincia, nomeComune, provincia));
 
             } catch (NumberFormatException e) {
