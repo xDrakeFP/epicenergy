@@ -1,7 +1,8 @@
 package gruppo1.epicenergy.services;
 
 import gruppo1.epicenergy.entities.Fattura;
-import gruppo1.epicenergy.entities.StatoFattura;
+
+import gruppo1.epicenergy.enums.StatoFattura;
 import gruppo1.epicenergy.payloads.fatture.FatturaDTO;
 import gruppo1.epicenergy.payloads.fatture.FatturaResponseDTO;
 import gruppo1.epicenergy.repositories.FatturaRepository;

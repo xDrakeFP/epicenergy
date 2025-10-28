@@ -2,7 +2,7 @@ package gruppo1.epicenergy.repositories;
 
 import gruppo1.epicenergy.entities.Cliente;
 import gruppo1.epicenergy.entities.Fattura;
-import gruppo1.epicenergy.entities.StatoFattura;
+import gruppo1.epicenergy.enums.StatoFattura;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

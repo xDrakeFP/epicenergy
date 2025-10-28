@@ -1,7 +1,6 @@
 package gruppo1.epicenergy.controllers;
 
 import gruppo1.epicenergy.payloads.fatture.*;
-import gruppo1.epicenergy.entities.StatoFattura;
 import gruppo1.epicenergy.services.FatturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
