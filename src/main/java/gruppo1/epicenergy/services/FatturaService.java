@@ -1,5 +1,6 @@
 package gruppo1.epicenergy.services;
 
+import gruppo1.epicenergy.entities.Cliente;
 import gruppo1.epicenergy.entities.Fattura;
 
 import gruppo1.epicenergy.entities.StatoFattura;
@@ -30,6 +31,8 @@ public class FatturaService {
 
 
     @Autowired
+    ClienteService clienteService;
+    @Autowired
     StatoFatturaRepository statoFatturaRepository;
     @Autowired
     public FatturaService(FatturaRepository repository) {
@@ -37,7 +40,7 @@ public class FatturaService {
     }
 
     private FatturaResponseDTO toDto(Fattura f) {
-        return new FatturaResponseDTO(f.getId(), f.getData(), f.getImporto(), f.getNumero(), f.getStato(), f.getClienteId());
+        return new FatturaResponseDTO(f.getId(), f.getData(), f.getImporto(), f.getNumero(), f.getStato(), f.getCliente());
     }
 
     private Fattura fromDto(FatturaDTO dto) {
@@ -46,7 +49,7 @@ public class FatturaService {
         f.setImporto(dto.importo());
         f.setNumero(dto.numero());
         f.setStato(dto.stato());
-        f.setClienteId(dto.clienteId());
+        f.setCliente(dto.cliente());
         return f;
     }
 
@@ -79,13 +82,14 @@ public class FatturaService {
         existing.setImporto(dto.importo());
         existing.setNumero(dto.numero());
         existing.setStato(dto.stato());
-        existing.setClienteId(dto.clienteId());
+        existing.setCliente(dto.cliente());
         Fattura saved = repository.save(existing);
         return toDto(saved);
     }
 
     public Page<FatturaResponseDTO> findByCliente(UUID clienteId, Pageable pageable) {
-        Page<Fattura> page = repository.findByClienteId(clienteId, pageable);
+        Cliente found = clienteService.getClienteById(clienteId);
+        Page<Fattura> page = repository.findByClienteId(found, pageable);
         return page.map(this::toDto);
     }
 
