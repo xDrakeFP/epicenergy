@@ -1,7 +1,6 @@
 package gruppo1.epicenergy.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import gruppo1.epicenergy.enums.TipoUtente;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -57,7 +56,7 @@ public class Utente implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(tipo.name()));
+        return List.of(new SimpleGrantedAuthority(tipo.getTipo()));
     }
 
     @Override
