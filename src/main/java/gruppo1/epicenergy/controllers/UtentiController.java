@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -38,6 +39,12 @@ public class UtentiController {
     @PutMapping("/{id}")
     public Utente update(@PathVariable UUID id, @RequestBody NewUtenteDTO body) {
         return utenteService.findByIdAndUpdate(id, body);
+
+    }
+
+    @PatchMapping("/{id}/avatar")
+    public String uploadImg(@RequestParam("avatar") MultipartFile file) {
+        return utenteService.uploadAvatar(file);
 
     }
 }
