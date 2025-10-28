@@ -1,6 +1,6 @@
 package gruppo1.epicenergy.payloads.indirizzo;
 
-import gruppo1.epicenergy.entities.ComuneProvincia;
+import gruppo1.epicenergy.entities.Comune;
 import jakarta.validation.constraints.NotBlank;
 
 public record IndirizzoDTO(
@@ -11,6 +11,6 @@ public record IndirizzoDTO(
         @NotBlank(message = "Obbligatorio indicare la località")
         String localita,
         @NotBlank(message = "Obbligatorio indicare il comune")
-        ComuneProvincia comuneProvincia
+        Comune comune
 ) {
 }

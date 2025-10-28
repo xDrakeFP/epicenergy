@@ -18,7 +18,7 @@ public class IndirizzoService {
     private IndirizzoRepository indirizzoRepository;
 
     public Indirizzo saveIndirizzo(IndirizzoDTO payload){
-        Indirizzo newIndirizzo = new Indirizzo(payload.via(), payload.numeroCivico(), payload.localita(), payload.comuneProvincia());
+        Indirizzo newIndirizzo = new Indirizzo(payload.via(), payload.numeroCivico(), payload.localita(), payload.comune());
         return indirizzoRepository.save(newIndirizzo);
     }
 
@@ -37,7 +37,7 @@ public class IndirizzoService {
         found.setVia(payload.via());
         found.setNumeroCivico(payload.numeroCivico());
         found.setLocalita(payload.localita());
-        found.setComuneProvincia(payload.comuneProvincia());
+        found.setComune(payload.comune());
         return indirizzoRepository.save(found);
     }
 
