@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -41,12 +42,14 @@ public class FattureController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<FatturaResponseDTO> create(@RequestBody FatturaDTO body){
         FatturaResponseDTO created = service.create(body);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable UUID id){
         try {
             service.delete(id);
@@ -57,6 +60,7 @@ public class FattureController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<FatturaResponseDTO> update(@PathVariable UUID id, @RequestBody FatturaDTO body){
         try {
             return ResponseEntity.ok(service.update(id, body));
