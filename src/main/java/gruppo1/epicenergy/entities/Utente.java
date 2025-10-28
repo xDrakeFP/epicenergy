@@ -29,7 +29,8 @@ public class Utente implements UserDetails {
     private String nome;
     private String cognome;
     private String avatar;
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "tipo_id")
     private TipoUtente tipo;
 
     // COSTRUTTORE
@@ -59,8 +60,4 @@ public class Utente implements UserDetails {
         return List.of(new SimpleGrantedAuthority(tipo.getTipo()));
     }
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
 }

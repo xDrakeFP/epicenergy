@@ -24,7 +24,8 @@ public class Fattura {
 
     private String numero;
 
-    @Column(name = "cliente_id")
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
     @ManyToOne
