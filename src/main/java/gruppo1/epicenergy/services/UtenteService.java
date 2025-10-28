@@ -1,12 +1,16 @@
 package gruppo1.epicenergy.services;
 
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import gruppo1.epicenergy.entities.Utente;
 import gruppo1.epicenergy.exceptions.AlreadyExistingException;
+import gruppo1.epicenergy.exceptions.BadRequestException;
 import gruppo1.epicenergy.exceptions.NotFoundException;
 import gruppo1.epicenergy.payloads.utenti.NewUtenteDTO;
 import gruppo1.epicenergy.repositories.UtenteRepository;
 import gruppo1.epicenergy.payloads.auth.UtenteDTO;
+import gruppo1.epicenergy.tools.MailGun;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,16 +18,28 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class UtenteService {
+    private long MAX_SIZE = 5 * 1024 * 1024;
+    private List<String> ALLOWED_TYPES = List.of("image/png", "image/jpeg");
     @Autowired
     private UtenteRepository utenteRepository;
 
     @Autowired
     private PasswordEncoder bcrypt;
+
+    @Autowired
+    private Cloudinary uploader;
+
+    @Autowired
+    private MailGun mailGun;
 
     //CERCA UTENTE TRAMITE ID
     public Utente findById(UUID id) {
@@ -48,12 +64,12 @@ public class UtenteService {
         utenteRepository.delete(utenteDaEliminare);
     }
 
-    public Utente findByEmail(String email){
-        return this.utenteRepository.findByEmail(email).orElseThrow(()-> new NotFoundException("Nessun utente trovato con l'email indicata"));
+    public Utente findByEmail(String email) {
+        return this.utenteRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("Nessun utente trovato con l'email indicata"));
     }
 
-    public Utente findByUsername(String username){
-        return this.utenteRepository.findByUsername(username).orElseThrow(()-> new NotFoundException("Nessun utente trovato con l'email indicata"));
+    public Utente findByUsername(String username) {
+        return this.utenteRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("Nessun utente trovato con l'email indicata"));
     }
 
     public Utente registerUser(UtenteDTO body) {
@@ -62,7 +78,9 @@ public class UtenteService {
         if (this.utenteRepository.existsByEmail(body.email()))
             throw new AlreadyExistingException("L'email indicata è già in uso");
         Utente utente = new Utente(body.username(), body.email(), bcrypt.encode(body.password()), body.nome(), body.cognome(), body.tipo());
-        return this.utenteRepository.save(utente);
+        Utente utenteSalvato = this.utenteRepository.save(utente);
+        mailGun.sendWelcomeEmailUtente(utenteSalvato);
+        return utenteSalvato;
     }
 
     //TUTTI GLI UTENTI (PAGINATI)
@@ -70,5 +88,23 @@ public class UtenteService {
         if (pageSize > 15) pageSize = 15;
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).ascending());
         return utenteRepository.findAll(pageable);
+    }
+
+    //UPLOAD AVATAR
+    public String uploadAvatar(MultipartFile file) {
+        //CONTROLLO SUL FILE
+        if (file.isEmpty()) throw new BadRequestException("Empty File!");
+        if (file.getSize() > MAX_SIZE) throw new BadRequestException("File troppo grande! (max 5mb)");
+        if (!ALLOWED_TYPES.contains(file.getContentType()))
+            throw new BadRequestException("Formato non accettato (png o jpeg)");
+
+
+        try {
+            Map result = uploader.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            String urlImg = (String) result.get("url");
+            return urlImg;
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

@@ -1,14 +1,20 @@
 package gruppo1.epicenergy.services;
 
+import gruppo1.epicenergy.entities.Cliente;
 import gruppo1.epicenergy.entities.Fattura;
 
-import gruppo1.epicenergy.enums.StatoFattura;
+import gruppo1.epicenergy.entities.StatoFattura;
+import gruppo1.epicenergy.exceptions.NotFoundException;
 import gruppo1.epicenergy.payloads.fatture.FatturaDTO;
 import gruppo1.epicenergy.payloads.fatture.FatturaResponseDTO;
+import gruppo1.epicenergy.payloads.fatture.StatoFatturaDTO;
 import gruppo1.epicenergy.repositories.FatturaRepository;
+import gruppo1.epicenergy.repositories.StatoFatturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,13 +29,18 @@ public class FatturaService {
 
     private final FatturaRepository repository;
 
+
+    @Autowired
+    ClienteService clienteService;
+    @Autowired
+    StatoFatturaRepository statoFatturaRepository;
     @Autowired
     public FatturaService(FatturaRepository repository) {
         this.repository = repository;
     }
 
     private FatturaResponseDTO toDto(Fattura f) {
-        return new FatturaResponseDTO(f.getId(), f.getData(), f.getImporto(), f.getNumero(), f.getStato(), f.getClienteId());
+        return new FatturaResponseDTO(f.getId(), f.getData(), f.getImporto(), f.getNumero(), f.getStato(), f.getCliente());
     }
 
     private Fattura fromDto(FatturaDTO dto) {
@@ -38,7 +49,7 @@ public class FatturaService {
         f.setImporto(dto.importo());
         f.setNumero(dto.numero());
         f.setStato(dto.stato());
-        f.setClienteId(dto.clienteId());
+        f.setCliente(dto.cliente());
         return f;
     }
 
@@ -71,25 +82,21 @@ public class FatturaService {
         existing.setImporto(dto.importo());
         existing.setNumero(dto.numero());
         existing.setStato(dto.stato());
-        existing.setClienteId(dto.clienteId());
+        existing.setCliente(dto.cliente());
         Fattura saved = repository.save(existing);
         return toDto(saved);
     }
 
     public Page<FatturaResponseDTO> findByCliente(UUID clienteId, Pageable pageable) {
-        Page<Fattura> page = repository.findByClienteId(clienteId, pageable);
+        Cliente found = clienteService.getClienteById(clienteId);
+        Page<Fattura> page = repository.findByClienteId(found, pageable);
         return page.map(this::toDto);
     }
 
-    public Page<FatturaResponseDTO> findByStato(String statoStr, Pageable pageable) {
-        StatoFattura stato;
-        try {
-            stato = StatoFattura.valueOf(statoStr);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Stato non valido: " + statoStr);
-        }
-        Page<Fattura> page = repository.findByStato(stato, pageable);
-        return page.map(this::toDto);
+    public Page<StatoFatturaDTO> findByStato(UUID id, int pageNumber, int pageSize, String sortBy) {
+        StatoFattura foundFattura = statoFatturaRepository.findById(id).orElseThrow(()-> new NotFoundException("Fattura non trovata"));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        return statoFatturaRepository.findByStato(foundFattura.getStatoStr(), pageable);
     }
 
     public Page<FatturaResponseDTO> findByDate(LocalDate data, Pageable pageable) {

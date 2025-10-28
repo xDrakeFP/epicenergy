@@ -1,5 +1,6 @@
 package gruppo1.epicenergy.controllers;
 
+import gruppo1.epicenergy.entities.StatoFattura;
 import gruppo1.epicenergy.payloads.fatture.*;
 import gruppo1.epicenergy.services.FatturaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,9 @@ import java.util.UUID;
 @RequestMapping("/api/fatture")
 public class FattureController {
 
-    private final FatturaService service;
-
     @Autowired
-    public FattureController(FatturaService service) {
-        this.service = service;
-    }
+    private FatturaService service;
+
 
     @GetMapping
     public Page<FatturaResponseDTO> getAll(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size){
@@ -73,8 +71,8 @@ public class FattureController {
 
     // Filtrate per stato(enum)
     @GetMapping("/by-state")
-    public Page<FatturaResponseDTO> findByState(@RequestParam String stato, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
-        return service.findByStato(stato, PageRequest.of(page, size));
+    public Page<StatoFatturaDTO> findByStato(@RequestParam UUID id, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam String sortBy) {
+        return service.findByStato(id, page, size, sortBy);
     }
 
     // Filtrate per data
