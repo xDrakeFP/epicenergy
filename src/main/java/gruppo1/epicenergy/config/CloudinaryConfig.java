@@ -12,11 +12,14 @@ import java.util.Map;
 public class CloudinaryConfig {
 
     @Bean
-    public Cloudinary imageUpload(@Value("${cloudinary.name}") String cloudinaryName,
+    public Cloudinary imageUpload(@Value("${cloudinary.name}") String cloudName,
                                   @Value("${cloudinary.key}") String apiKey,
                                   @Value("${cloudinary.secret}") String apiSecret) {
+        System.out.println(cloudName);
+        System.out.println(apiKey);
+        System.out.println(apiSecret);
         Map<String, String> config = new HashMap<>();
-        config.put("cloud_name", cloudinaryName);
+        config.put("cloud_name", cloudName);
         config.put("api_key", apiKey);
         config.put("api_secret", apiSecret);
         return new Cloudinary(config);
