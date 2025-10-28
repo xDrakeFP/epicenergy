@@ -20,7 +20,7 @@ public class StatoFattura {
     private String statoStr;
 
 
-    public StatoFattura(String stato, Fattura statoFattura) {
-        this.statoStr = stato;
+    public StatoFattura(String statoStr, Fattura statoFattura) {
+        this.statoStr = statoStr;
     }
 }

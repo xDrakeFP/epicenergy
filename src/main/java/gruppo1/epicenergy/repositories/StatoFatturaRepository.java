@@ -11,5 +11,5 @@ import java.util.UUID;
 
 public interface StatoFatturaRepository extends JpaRepository <StatoFattura, UUID>{
 
-    Page<StatoFatturaDTO> findByStato(String stato, Pageable pageable);
+    Page<StatoFatturaDTO> findByStatoStr(String statoStr, Pageable pageable);
 }

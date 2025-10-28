@@ -96,7 +96,7 @@ public class FatturaService {
     public Page<StatoFatturaDTO> findByStato(UUID id, int pageNumber, int pageSize, String sortBy) {
         StatoFattura foundFattura = statoFatturaRepository.findById(id).orElseThrow(()-> new NotFoundException("Fattura non trovata"));
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
-        return statoFatturaRepository.findByStato(foundFattura.getStatoStr(), pageable);
+        return statoFatturaRepository.findByStatoStr(foundFattura.getStatoStr(), pageable);
     }
 
     public Page<FatturaResponseDTO> findByDate(LocalDate data, Pageable pageable) {
