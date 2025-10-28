@@ -1,6 +1,5 @@
 package gruppo1.epicenergy.entities;
 
-import gruppo1.epicenergy.enums.StatoFattura;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -21,11 +20,12 @@ public class Fattura {
 
     private String numero;
 
-    @Enumerated(EnumType.STRING)
-    private StatoFattura stato;
-
     @Column(name = "cliente_id")
     private UUID clienteId;
+
+    @ManyToOne
+    @JoinColumn (name = "stato_fattura_id")
+    private StatoFattura stato;
 
 
     public Fattura() {

@@ -2,13 +2,18 @@ package gruppo1.epicenergy.services;
 
 import gruppo1.epicenergy.entities.Fattura;
 
-import gruppo1.epicenergy.enums.StatoFattura;
+import gruppo1.epicenergy.entities.StatoFattura;
+import gruppo1.epicenergy.exceptions.NotFoundException;
 import gruppo1.epicenergy.payloads.fatture.FatturaDTO;
 import gruppo1.epicenergy.payloads.fatture.FatturaResponseDTO;
+import gruppo1.epicenergy.payloads.fatture.StatoFatturaDTO;
 import gruppo1.epicenergy.repositories.FatturaRepository;
+import gruppo1.epicenergy.repositories.StatoFatturaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +28,11 @@ public class FatturaService {
 
     private final FatturaRepository repository;
 
+
+    @Autowired
+    StatoFatturaRepository statoFatturaRepository;
+    @Autowired
+    StatoFatturaService statoFattura;
     @Autowired
     public FatturaService(FatturaRepository repository) {
         this.repository = repository;
@@ -81,15 +91,10 @@ public class FatturaService {
         return page.map(this::toDto);
     }
 
-    public Page<FatturaResponseDTO> findByStato(String statoStr, Pageable pageable) {
-        StatoFattura stato;
-        try {
-            stato = StatoFattura.valueOf(statoStr);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Stato non valido: " + statoStr);
-        }
-        Page<Fattura> page = repository.findByStato(stato, pageable);
-        return page.map(this::toDto);
+    public Page<StatoFatturaDTO> findByStato(UUID id, int pageNumber, int pageSize, String sortBy) {
+        StatoFattura foundFattura = statoFatturaRepository.findById(id).orElseThrow(()-> new NotFoundException("Fattura non trovata"));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        return statoFatturaRepository.findByStato(foundFattura.getStatoStr(), pageable);
     }
 
     public Page<FatturaResponseDTO> findByDate(LocalDate data, Pageable pageable) {
