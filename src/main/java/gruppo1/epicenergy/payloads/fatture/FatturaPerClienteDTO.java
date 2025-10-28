@@ -1,4 +1,6 @@
 package gruppo1.epicenergy.payloads.fatture;
 
-public record FatturaPerClienteDTO (String string){
+import java.util.UUID;
+
+public record FatturaPerClienteDTO(UUID clienteId, int page, int size) {
 }
