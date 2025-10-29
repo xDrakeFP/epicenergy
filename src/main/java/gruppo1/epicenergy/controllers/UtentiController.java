@@ -43,8 +43,8 @@ public class UtentiController {
     }
 
     @PatchMapping("/{id}/avatar")
-    public String uploadImg(@RequestParam("avatar") MultipartFile file) {
-        return utenteService.uploadAvatar(file);
+    public Utente uploadImg(@PathVariable UUID id, @RequestParam("avatar") MultipartFile file) {
+        return utenteService.uploadAvatar(id, file);
 
     }
 }

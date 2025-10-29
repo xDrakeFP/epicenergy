@@ -3,11 +3,13 @@ package gruppo1.epicenergy.services;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import gruppo1.epicenergy.entities.TipoUtente;
 import gruppo1.epicenergy.entities.Utente;
 import gruppo1.epicenergy.exceptions.AlreadyExistingException;
 import gruppo1.epicenergy.exceptions.BadRequestException;
 import gruppo1.epicenergy.exceptions.NotFoundException;
 import gruppo1.epicenergy.payloads.utenti.NewUtenteDTO;
+import gruppo1.epicenergy.repositories.TipoUtenteRepository;
 import gruppo1.epicenergy.repositories.UtenteRepository;
 import gruppo1.epicenergy.payloads.auth.UtenteDTO;
 import gruppo1.epicenergy.tools.MailGun;
@@ -40,6 +42,9 @@ public class UtenteService {
 
     @Autowired
     private MailGun mailGun;
+
+    @Autowired
+    TipoUtenteRepository tipoUtenteRepository;
 
     //CERCA UTENTE TRAMITE ID
     public Utente findById(UUID id) {
@@ -77,7 +82,8 @@ public class UtenteService {
             throw new AlreadyExistingException("L'username indicato è già in uso");
         if (this.utenteRepository.existsByEmail(body.email()))
             throw new AlreadyExistingException("L'email indicata è già in uso");
-        Utente utente = new Utente(body.username(), body.email(), bcrypt.encode(body.password()), body.nome(), body.cognome(), body.tipo());
+        TipoUtente found = tipoUtenteRepository.findByTipo(body.tipo()).orElseThrow(() -> new NotFoundException("Tipo utente non trovato"));
+        Utente utente = new Utente(body.username(), body.email(), bcrypt.encode(body.password()), body.nome(), body.cognome(), found);
         Utente utenteSalvato = this.utenteRepository.save(utente);
         mailGun.sendWelcomeEmailUtente(utenteSalvato);
         return utenteSalvato;
@@ -91,20 +97,22 @@ public class UtenteService {
     }
 
     //UPLOAD AVATAR
-    public String uploadAvatar(MultipartFile file) {
+    public Utente uploadAvatar(UUID id, MultipartFile file) {
         //CONTROLLO SUL FILE
         if (file.isEmpty()) throw new BadRequestException("Empty File!");
         if (file.getSize() > MAX_SIZE) throw new BadRequestException("File troppo grande! (max 5mb)");
         if (!ALLOWED_TYPES.contains(file.getContentType()))
             throw new BadRequestException("Formato non accettato (png o jpeg)");
-
+        Utente trovato = findById(id);
 
         try {
             Map result = uploader.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
             String urlImg = (String) result.get("url");
-            return urlImg;
+            trovato.setAvatar(urlImg);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+
+        return utenteRepository.save(trovato);
     }
 }
