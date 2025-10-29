@@ -12,9 +12,12 @@ import java.util.UUID;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, UUID> {
-    Page<Cliente> findByNomeContattoStartingWith(String nome, Pageable pageable);
+    Page<Cliente> findByNomeContattoContaining(String nome, Pageable pageable);
+
     Page<Cliente> findByDataInserimento(LocalDate dataInserimento, Pageable pageable);
+
     Page<Cliente> findByDataUltimoContatto(LocalDate dataUltimoContatto, Pageable pageable);
-    Page<Cliente> findByFatturatoAnnuale(double fatturato, Pageable pageable);
+
+    Page<Cliente> findByFatturatoAnnualeGreaterThanEqual(double fatturato, Pageable pageable);
 
 }

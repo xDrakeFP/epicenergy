@@ -25,8 +25,8 @@ public class ClientiController {
     private ClienteService clienteService;
 
     @GetMapping
-    public String getAll() {
-        return "TUTTI I CLIENTI";
+    public Page<Cliente> getAll(@RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "nomeContatto") String sortBy, @RequestParam(defaultValue = "asc") String orderBy) {
+        return clienteService.findAll(pageNumber, pageSize, sortBy, orderBy);
     }
 
     @GetMapping("/{id}")
@@ -41,14 +41,14 @@ public class ClientiController {
     }
 
     @PutMapping("/{id}")
-    public Cliente update(@PathVariable UUID id, @RequestBody ClienteDTO body){
+    public Cliente update(@PathVariable UUID id, @RequestBody ClienteDTO body) {
         return clienteService.updateCliente(id, body);
     }
 
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void delete(@PathVariable UUID id){
+    public void delete(@PathVariable UUID id) {
         clienteService.deleteCliente(id);
     }
 
@@ -93,15 +93,15 @@ public class ClientiController {
     }
 
 
-@GetMapping("/search")
-public Page<Cliente> sortBy(@RequestParam(required = false) String nome,
-                            @RequestParam(required = false) Double fatturato,
-                            @RequestParam(required = false) LocalDate dataInserimento,
-                            @RequestParam(required = false) LocalDate dataUltimoContatto,
-                            @RequestParam(defaultValue = "0") int pageNumber,
-                            @RequestParam(defaultValue = "10") int pageSize,
-                            @RequestParam(defaultValue = "nomeContatto") String sortBy,
-                            @RequestParam(defaultValue = "asc") String direction){
+    @GetMapping("/search")
+    public Page<Cliente> sortBy(@RequestParam(required = false) String nome,
+                                @RequestParam(required = false) Double fatturato,
+                                @RequestParam(required = false) LocalDate dataInserimento,
+                                @RequestParam(required = false) LocalDate dataUltimoContatto,
+                                @RequestParam(defaultValue = "0") int pageNumber,
+                                @RequestParam(defaultValue = "10") int pageSize,
+                                @RequestParam(defaultValue = "nomeContatto") String sortBy,
+                                @RequestParam(defaultValue = "asc") String direction) {
         return clienteService.sortBy(
                 nome,
                 fatturato,
@@ -112,6 +112,6 @@ public Page<Cliente> sortBy(@RequestParam(required = false) String nome,
                 sortBy,
                 direction
         );
-}
+    }
 }
 
