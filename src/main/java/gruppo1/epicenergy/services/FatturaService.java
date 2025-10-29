@@ -97,25 +97,26 @@ public class FatturaService {
         return this.fatturaRepository.findByImportoBetween(body.min(), body.max(), pageable);
     }
 
-    public Page<Fattura> sortBy(UUID clienteId, String stato, int anno, LocalDate data,int min, int max,
+    public Page<Fattura> sortBy(UUID clienteId, StatoFatturaDTO stato, FatturaAnnoDTO anno, LocalDate data, FatturaRangeImporti importi,
                                  int pageNumber, int pageSize, String sortBy,  String direction) {
         Sort sort = direction.equalsIgnoreCase("desc") ?
                 Sort.by(sortBy).descending() :
                 Sort.by(sortBy).ascending();
-
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-
         if (clienteId!= null) {
-            return this.findByCliente(clienteId,pageNumber,pageSize, sortBy);
+            return this.findByCliente(clienteId, pageable);
         }
-        if (stato != null){
-            return this.findByStato()
+        if ( stato != null){
+            return findByStato(stato,pageNumber,pageSize,sortBy);
         }
-        if (dataInserimento != null) {
-            return  fatturaRepository.findByDataInserimento(dataInserimento, pageable);
+        if (anno != null) {
+            return findByYear(anno, pageNumber, pageSize, sortBy);
         }
-        if (dataUltimoContatto != null){
-            return  fatturaRepository.findByDataUltimoContatto(dataUltimoContatto, pageable);
+        if (data != null){
+            return  findByDate(data,pageNumber, pageSize, sortBy);
+        }
+        if (importi != null){
+            return  findByRange(importi, pageNumber, pageSize, sortBy);
         }
         return fatturaRepository.findAll(pageable);
     }
