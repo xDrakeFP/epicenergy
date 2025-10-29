@@ -62,7 +62,7 @@ public class ClienteService {
     // Ritorna filtraggio per nome
     public Page<Cliente> findByNomeContattoStartingWith(String nome, int pageNumber, int pageSize, String sortBy) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
-        return clienteRepository.findByNomeContattoStartingWith(nome, pageable);
+        return clienteRepository.findByNomeContattoContaining(nome, pageable);
     }
 
     // Ritorna filtraggio per data inserimento
@@ -80,7 +80,7 @@ public class ClienteService {
     // Ritorna filtraggio by fatturato
     public Page<Cliente> findByFatturatoAnnuale(double fatturato, int pageNumber, int pageSize, String sortBy) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
-        return clienteRepository.findByFatturatoAnnuale(fatturato, pageable);
+        return clienteRepository.findByFatturatoAnnualeGreaterThanEqual(fatturato, pageable);
     }
 
     // Lista di clienti
@@ -132,25 +132,24 @@ public class ClienteService {
         }
     }
 
-    public Page <Cliente> sortBy(String nome,  Double fatturato, LocalDate dataInserimento, LocalDate dataUltimoContatto,
-                                 int pageNumber, int pageSize, String sortBy,  String direction) {
+    public Page<Cliente> sortBy(String nome, Double fatturato, LocalDate dataInserimento, LocalDate dataUltimoContatto, int pageNumber, int pageSize, String sortBy, String direction) {
         Sort sort = direction.equalsIgnoreCase("desc") ?
                 Sort.by(sortBy).descending() :
                 Sort.by(sortBy).ascending();
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        
-        if (nome!= null) {
-            return clienteRepository.findByNomeContattoStartingWith(nome, pageable);
+
+        if (nome != null) {
+            return clienteRepository.findByNomeContattoContaining(nome, pageable);
         }
-        if (fatturato != null){
-            return clienteRepository.findByFatturatoAnnuale(fatturato, pageable);
+        if (fatturato != null) {
+            return clienteRepository.findByFatturatoAnnualeGreaterThanEqual(fatturato, pageable);
         }
         if (dataInserimento != null) {
-            return  clienteRepository.findByDataInserimento(dataInserimento, pageable);
+            return clienteRepository.findByDataInserimento(dataInserimento, pageable);
         }
-        if (dataUltimoContatto != null){
-            return  clienteRepository.findByDataUltimoContatto(dataUltimoContatto, pageable);
+        if (dataUltimoContatto != null) {
+            return clienteRepository.findByDataUltimoContatto(dataUltimoContatto, pageable);
         }
         return clienteRepository.findAll(pageable);
     }

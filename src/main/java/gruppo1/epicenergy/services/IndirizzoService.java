@@ -1,7 +1,10 @@
 package gruppo1.epicenergy.services;
 
+import gruppo1.epicenergy.entities.Comune;
 import gruppo1.epicenergy.entities.Indirizzo;
+import gruppo1.epicenergy.exceptions.NotFoundException;
 import gruppo1.epicenergy.payloads.indirizzo.IndirizzoDTO;
+import gruppo1.epicenergy.repositories.ComuneRepository;
 import gruppo1.epicenergy.repositories.IndirizzoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,31 +20,36 @@ public class IndirizzoService {
     @Autowired
     private IndirizzoRepository indirizzoRepository;
 
-    public Indirizzo saveIndirizzo(IndirizzoDTO payload){
-        Indirizzo newIndirizzo = new Indirizzo(payload.via(), payload.numeroCivico(), payload.localita(), payload.comune());
+    @Autowired
+    private ComuneRepository comuneRepository;
+
+    public Indirizzo saveIndirizzo(IndirizzoDTO payload) {
+        Comune trovato = comuneRepository.findById(UUID.fromString(payload.comune())).orElseThrow(() -> new NotFoundException("comune non trovato"));
+        Indirizzo newIndirizzo = new Indirizzo(payload.via(), payload.numeroCivico(), payload.localita(), trovato);
         return indirizzoRepository.save(newIndirizzo);
     }
 
-    public Page<Indirizzo> findAll(int pageN, int pageSize){
-        if (pageSize>50) pageSize = 50;
+    public Page<Indirizzo> findAll(int pageN, int pageSize) {
+        if (pageSize > 50) pageSize = 50;
         Pageable pageable = PageRequest.of(pageN, pageSize);
         return this.indirizzoRepository.findAll(pageable);
     }
 
-    public Indirizzo findById(UUID id){
+    public Indirizzo findById(UUID id) {
         return indirizzoRepository.findById(id).orElseThrow(() -> new NotAcceptableStatusException("L'elemento non è stato trovato."));
     }
 
-    public Indirizzo findByIdAndUpdate(UUID id, IndirizzoDTO payload){
+    public Indirizzo findByIdAndUpdate(UUID id, IndirizzoDTO payload) {
         Indirizzo found = findById(id);
+        Comune trovato = comuneRepository.findById(found.getComune().getId()).orElseThrow(() -> new NotFoundException("comune non trovato"));
         found.setVia(payload.via());
         found.setNumeroCivico(payload.numeroCivico());
         found.setLocalita(payload.localita());
-        found.setComune(payload.comune());
+        found.setComune(trovato);
         return indirizzoRepository.save(found);
     }
 
-    public void findAndDelete(UUID id){
+    public void findAndDelete(UUID id) {
         Indirizzo found = findById(id);
         indirizzoRepository.delete(found);
     }
