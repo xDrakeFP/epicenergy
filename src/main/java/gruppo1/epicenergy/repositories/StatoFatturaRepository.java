@@ -7,9 +7,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface StatoFatturaRepository extends JpaRepository <StatoFattura, UUID>{
 
-    Page<StatoFatturaDTO> findByStatoStr(String statoStr, Pageable pageable);
+    Optional<StatoFattura> findByStatoStr(String statoStr);
+   // Page<StatoFatturaDTO> findByStatoStr(String statoStr, Pageable pageable);
 }

@@ -15,22 +15,14 @@ import java.util.UUID;
 @Repository
 public interface FatturaRepository extends JpaRepository<Fattura, UUID> {
 
-    List<Fattura> findByClienteId(Cliente cliente);
+    Page<Fattura> findByClienteId(UUID id, Pageable pageable);
 
-    Page<Fattura> findByClienteId(Cliente cliente, Pageable pageable);
+    Page<Fattura> findByStatoFatturaId(UUID id, Pageable pageable);
 
-    List<Fattura> findByCliente(Cliente cliente, Pageable pageable);
+    Page<Fattura> findByDataBetween (LocalDate start,LocalDate end, Pageable pageable);
 
-    Page<Fattura> findByStato(StatoFattura stato, Pageable pageable);
+    Page<Fattura> findByData (LocalDate data,Pageable pageable);
 
-    Page<Fattura> findByData(LocalDate data, Pageable pageable);
-
-    Page<Fattura> findByDataBetween(LocalDate start, LocalDate end, Pageable pageable);
-
-    Page<Fattura> findByImportoBetween(Double min, Double max, Pageable pageable);
-
-    Page<Fattura> findByImportoGreaterThanEqual(Double min, Pageable pageable);
-
-    Page<Fattura> findByImportoLessThanEqual(Double max, Pageable pageable);
+    Page<Fattura> findByImportoBetween(double min, double max, Pageable pageable);
 
 }
