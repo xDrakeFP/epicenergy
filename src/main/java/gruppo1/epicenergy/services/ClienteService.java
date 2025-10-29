@@ -132,7 +132,8 @@ public class ClienteService {
         }
     }
 
-    public Page <Cliente> sortBy(String nome,  Double fatturato, LocalDate dataInserimento, LocalDate dataUltimoContatto, int pageNumber, int pageSize, String sortBy,  String direction) {
+    public Page <Cliente> sortBy(String nome,  Double fatturato, LocalDate dataInserimento, LocalDate dataUltimoContatto,
+                                 int pageNumber, int pageSize, String sortBy,  String direction) {
         Sort sort = direction.equalsIgnoreCase("desc") ?
                 Sort.by(sortBy).descending() :
                 Sort.by(sortBy).ascending();

@@ -25,8 +25,9 @@ public class ClientiController {
     private ClienteService clienteService;
 
     @GetMapping
-    public String getAll() {
-        return "TUTTI I CLIENTI";
+    public Page<Cliente> findAll(@RequestParam int pageNumber, @RequestParam int pageSize,
+                                @RequestParam String sortBy, String orderBy) {
+        return clienteService.findAll(pageNumber, pageSize, sortBy, orderBy);
     }
 
     @GetMapping("/{id}")
@@ -93,9 +94,9 @@ public class ClientiController {
     }
 
 
-@GetMapping("/search")
-public Page<Cliente> sortBy(@RequestParam(required = false) String nome,
-                            @RequestParam(required = false) Double fatturato,
+    @GetMapping("/search")
+    public Page<Cliente> sortBy(@RequestParam(required = false) String nome,
+                             @RequestParam(required = false) Double fatturato,
                             @RequestParam(required = false) LocalDate dataInserimento,
                             @RequestParam(required = false) LocalDate dataUltimoContatto,
                             @RequestParam(defaultValue = "0") int pageNumber,
