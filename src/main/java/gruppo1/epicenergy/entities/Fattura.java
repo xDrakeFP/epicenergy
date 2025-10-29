@@ -1,8 +1,10 @@
 package gruppo1.epicenergy.entities;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -16,6 +18,7 @@ public class Fattura {
 
     @Id
     @GeneratedValue
+    @Setter(AccessLevel.NONE)
     private UUID id;
 
     private LocalDate data;
@@ -33,16 +36,12 @@ public class Fattura {
     private StatoFattura stato;
 
 
-    public Fattura(UUID id, LocalDate data, Double importo, String numero, StatoFattura stato, Cliente cliente) {
-        this.id = id;
+    public Fattura(LocalDate data, Double importo, String numero, StatoFattura stato, Cliente cliente) {
         this.data = data;
         this.importo = importo;
         this.numero = numero;
         this.stato = stato;
         this.cliente = cliente;
     }
-
-
-
 
 }
