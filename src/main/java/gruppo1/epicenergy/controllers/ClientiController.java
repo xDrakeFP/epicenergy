@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -50,13 +53,13 @@ public class ClientiController {
     }
 
 
-    // Ordinati in base al parametro che gli passiamo (Page)
+    /* Ordinati in base al parametro che gli passiamo (Page)
     @GetMapping("/sort-by")
     public Page<Cliente> sortByParameter(@RequestParam int pageNumber, @RequestParam int pageSize, @RequestParam String sortBy, @RequestParam String orderBy) {
         return clienteService.findAll(pageNumber, pageSize, sortBy, orderBy);
     }
 
-    // Filtrati per nome
+     Filtrati per nome
     @GetMapping("/search-by-name")
     public Page<Cliente> findByNomeContattoStartingWith(@RequestParam String nome, @RequestParam int pageNumber, @RequestParam int pageSize,
                                                         @RequestParam String sortBy) {
@@ -82,7 +85,7 @@ public class ClientiController {
     public Page<Cliente> findByDataUltimoContatto(@RequestParam LocalDate dataUltimoContatto, @RequestParam int pageNumber, @RequestParam int pageSize,
                                                   @RequestParam String sortBy) {
         return clienteService.findByDataUltimoContatto(dataUltimoContatto, pageNumber, pageSize, sortBy);
-    }
+    } */
 
     @PatchMapping("/{id}/logo")
     public String uploadLogo(@RequestParam("logo") MultipartFile file) {
@@ -90,4 +93,25 @@ public class ClientiController {
     }
 
 
+@GetMapping("/search")
+public Page<Cliente> sortBy(@RequestParam(required = false) String nome,
+                            @RequestParam(required = false) Double fatturato,
+                            @RequestParam(required = false) LocalDate dataInserimento,
+                            @RequestParam(required = false) LocalDate dataUltimoContatto,
+                            @RequestParam(defaultValue = "0") int pageNumber,
+                            @RequestParam(defaultValue = "10") int pageSize,
+                            @RequestParam(defaultValue = "nomeContatto") String sortBy,
+                            @RequestParam(defaultValue = "asc") String direction){
+        return clienteService.sortBy(
+                nome,
+                fatturato,
+                dataInserimento,
+                dataUltimoContatto,
+                pageNumber,
+                pageSize,
+                sortBy,
+                direction
+        );
 }
+}
+

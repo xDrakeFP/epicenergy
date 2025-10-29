@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -129,5 +130,27 @@ public class ClienteService {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    public Page <Cliente> sortBy(String nome,  Double fatturato, LocalDate dataInserimento, LocalDate dataUltimoContatto, int pageNumber, int pageSize, String sortBy,  String direction) {
+        Sort sort = direction.equalsIgnoreCase("desc") ?
+                Sort.by(sortBy).descending() :
+                Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        
+        if (nome!= null) {
+            return clienteRepository.findByNomeContattoStartingWith(nome, pageable);
+        }
+        if (fatturato != null){
+            return clienteRepository.findByFatturatoAnnuale(fatturato, pageable);
+        }
+        if (dataInserimento != null) {
+            return  clienteRepository.findByDataInserimento(dataInserimento, pageable);
+        }
+        if (dataUltimoContatto != null){
+            return  clienteRepository.findByDataUltimoContatto(dataUltimoContatto, pageable);
+        }
+        return clienteRepository.findAll(pageable);
     }
 }
