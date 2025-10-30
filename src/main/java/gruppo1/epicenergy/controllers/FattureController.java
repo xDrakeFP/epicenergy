@@ -1,5 +1,6 @@
 package gruppo1.epicenergy.controllers;
 
+import gruppo1.epicenergy.entities.Cliente;
 import gruppo1.epicenergy.entities.Fattura;
 import gruppo1.epicenergy.entities.StatoFattura;
 import gruppo1.epicenergy.payloads.fatture.*;
@@ -84,4 +85,18 @@ public class FattureController {
 //        return service.findByRange(minImporto, maxImporto, PageRequest.of(page, size));
 //    }
 
+    @GetMapping("/search")
+    public ResponseEntity <Page<Fattura>> sortBy(@RequestParam(required = false) UUID cliente,
+                                                 @RequestParam(required = false) UUID idStato,
+                                                 @RequestParam(required = false) LocalDate data,
+                                                 @RequestParam(required = false) Double min,
+                                                 @RequestParam(required = false) Double max,
+                                                 @RequestParam(defaultValue = "0") int pageNumber,
+                                                 @RequestParam(defaultValue = "10") int pageSize,
+                                                 @RequestParam(defaultValue = "nomeContatto") String sortBy,
+                                                 @RequestParam(defaultValue = "asc") String direction){
+
+        Page<Fattura> fatture = service.sortBy(cliente,idStato,data,min,max, pageNumber, pageSize, sortBy, direction);
+        return ResponseEntity.ok(fatture);
+    }
 }

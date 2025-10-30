@@ -9,11 +9,13 @@ import gruppo1.epicenergy.exceptions.NotFoundException;
 import gruppo1.epicenergy.payloads.fatture.*;
 import gruppo1.epicenergy.repositories.FatturaRepository;
 import gruppo1.epicenergy.repositories.StatoFatturaRepository;
+import gruppo1.epicenergy.specifications.FatturaSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -98,30 +100,17 @@ public class FatturaService {
         return this.fatturaRepository.findByImportoBetween(body.min(), body.max(), pageable);
     }
 
-    public Page<Fattura> sortBy(UUID clienteId, StatoFatturaDTO stato, FatturaAnnoDTO anno, FatturaDataDTO data, FatturaRangeImporti importi,
-                                 int pageNumber, int pageSize, String sortBy,  String direction) {
+    public Page<Fattura> sortBy(UUID cliente, UUID idStato, LocalDate data, Double min, Double max, int pageNumber, int pageSize, String sortBy, String direction) {
         Sort sort = direction.equalsIgnoreCase("desc") ?
                 Sort.by(sortBy).descending() :
                 Sort.by(sortBy).ascending();
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        if (clienteId!= null) {
-            return this.findByCliente(clienteId, pageNumber,pageSize,sortBy);
-        }
-        if ( stato != null){
-            return findByStato(stato,pageNumber,pageSize,sortBy);
-        }
-        if (anno != null) {
-            return findByYear(anno, pageNumber, pageSize, sortBy);
-        }
-        if (data != null){
-            return  findByDate(data,pageNumber, pageSize, sortBy);
-        }
-        if (importi != null){
-            return  findByRange(importi, pageNumber, pageSize, sortBy);
-        }
-        return fatturaRepository.findAll(pageable);
-    }
 
-
+        return fatturaRepository.findAll(
+                Specification.anyOf(FatturaSpecification.clientIs(cliente)).and(FatturaSpecification.fatturaStato(idStato))
+                        .and(FatturaSpecification.dataFattura(data)).and(FatturaSpecification.findPerAnno(data)).and(FatturaSpecification.findPerRange(min, max)),
+                pageable
+        );
     }
+}
 

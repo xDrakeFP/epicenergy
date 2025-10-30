@@ -2,6 +2,7 @@ package gruppo1.epicenergy.specifications;
 
 import gruppo1.epicenergy.entities.Cliente;
 import gruppo1.epicenergy.entities.Provincia;
+import gruppo1.epicenergy.repositories.ComuneRepository;
 import gruppo1.epicenergy.repositories.ProvinciaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -14,6 +15,10 @@ public class ClienteSpecification {
     @Autowired
 
     private ProvinciaRepository repo;
+
+    @Autowired
+    private ComuneRepository comuneRepository;
+
 
     public static Specification<Cliente> nameContains(String nome){
         return (root, query, criteriaBuilder) ->
