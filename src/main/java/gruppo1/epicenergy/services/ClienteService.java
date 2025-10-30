@@ -14,10 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -134,7 +131,7 @@ public class ClienteService {
     }
 
     public Page<Cliente> sortBy(String nome, Double fatturato, LocalDate dataInserimento,
-                                LocalDate dataUltimoContatto, int pageNumber, int pageSize, String sortBy, String direction) {
+                                LocalDate dataUltimoContatto, UUID provincia, int pageNumber, int pageSize, String sortBy, String direction) {
         Sort sort = direction.equalsIgnoreCase("desc") ?
                 Sort.by(sortBy).descending() :
                 Sort.by(sortBy).ascending();

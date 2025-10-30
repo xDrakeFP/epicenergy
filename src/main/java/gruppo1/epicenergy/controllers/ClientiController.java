@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +26,8 @@ public class ClientiController {
 
     @Autowired
     private ClienteService clienteService;
+    @Autowired
+    private ClienteSpecification clienteSpecification;
 
     @GetMapping
     public Page<Cliente> getAll(@RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "nomeContatto") String sortBy, @RequestParam(defaultValue = "asc") String orderBy) {
@@ -95,33 +98,21 @@ public class ClientiController {
     }
 
 
+
     @GetMapping("/search")
-    public Page<Cliente> sortBy(@RequestParam(required = false) String nome,
-                                @RequestParam(required = false) Double fatturato,
-                                @RequestParam(required = false) LocalDate dataInserimento,
-                                @RequestParam(required = false) LocalDate dataUltimoContatto,
-                                @RequestParam(defaultValue = "0") int pageNumber,
-                                @RequestParam(defaultValue = "10") int pageSize,
-                                @RequestParam(defaultValue = "nomeContatto") String sortBy,
-                                @RequestParam(defaultValue = "asc") String direction) {
-        return clienteService.sortBy(
-                nome,
-                fatturato,
-                dataInserimento,
-                dataUltimoContatto,
-                pageNumber,
-                pageSize,
-                sortBy,
-                direction
-        );
-}
-@GetMapping("/search-by")
-    public Specification<Cliente> searchBy(@RequestParam(required = false) String nome,
-                                           @RequestParam(defaultValue = "0") int pageNumber,
-                                           @RequestParam(defaultValue = "10") int pageSize,
-                                           @RequestParam(defaultValue = "nomeContatto") String sortBy,
-                                           @RequestParam(defaultValue = "asc") String direction){
-        return ClienteSpecification.nameContains(nome);
+    public ResponseEntity <Page<Cliente>> sortBy(@RequestParam(required = false) String nome,
+                                                 @RequestParam(required = false) Double fatturato,
+                                                 @RequestParam(required = false) LocalDate dataInserimento,
+                                                 @RequestParam(required = false) LocalDate dataUltimoContatto,
+                                                 @RequestParam(required = false) UUID provincia,
+                                                 @RequestParam(defaultValue = "0") int pageNumber,
+                                                 @RequestParam(defaultValue = "10") int pageSize,
+                                                 @RequestParam(defaultValue = "nomeContatto") String sortBy,
+                                                 @RequestParam(defaultValue = "asc") String direction){
+
+        Page<Cliente> cliente = clienteService.sortBy(nome, fatturato, dataInserimento, dataUltimoContatto, provincia, pageNumber, pageSize, sortBy,direction);
+
+        return ResponseEntity.ok(cliente);
 }
 }
 
