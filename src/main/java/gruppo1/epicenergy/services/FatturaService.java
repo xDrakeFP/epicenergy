@@ -34,26 +34,26 @@ public class FatturaService {
     @Autowired
     private ClienteService clienteService;
 
-    public Fattura createFattura(FatturaDTO body){
+    public Fattura createFattura(FatturaDTO body) {
         StatoFattura newStato = this.findStatoByString(body.stato());
         Cliente found = this.clienteService.getClienteById(body.clienteId());
-        Fattura newFattura = new Fattura(body.data(),body.importo(), body.numero(), newStato,found);
+        Fattura newFattura = new Fattura(body.data(), body.importo(), body.numero(), newStato, found);
         return this.fatturaRepository.save(newFattura);
     }
 
-    public StatoFattura findStatoByString(String string){
-        return this.statoFatturaRepository.findByStatoStr(string).orElseThrow(()-> new NotFoundException("Stato della fattura non esistente"));
+    public StatoFattura findStatoByString(String string) {
+        return this.statoFatturaRepository.findByStatoStr(string).orElseThrow(() -> new NotFoundException("Stato della fattura non esistente"));
     }
 
-    public Fattura findById(UUID id){
-        return this.fatturaRepository.findById(id).orElseThrow(()-> new NotFoundException("Nessuna fattura trovata con l'id inserito"));
+    public Fattura findById(UUID id) {
+        return this.fatturaRepository.findById(id).orElseThrow(() -> new NotFoundException("Nessuna fattura trovata con l'id inserito"));
     }
 
-    public void delete(UUID id){
+    public void delete(UUID id) {
         this.fatturaRepository.delete(this.findById(id));
     }
 
-    public Fattura update(UUID id, FatturaDTO body){
+    public Fattura update(UUID id, FatturaDTO body) {
         Fattura found = this.findById(id);
         StatoFattura stato = this.findStatoByString(body.stato());
         found.setImporto(body.importo());
@@ -61,39 +61,40 @@ public class FatturaService {
         return this.fatturaRepository.save(found);
     }
 
-    public Page<Fattura> getAll(int pageNumber, int pageSize, String sortBy){
+    public Page<Fattura> getAll(int pageNumber, int pageSize, String sortBy) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         return this.fatturaRepository.findAll(pageable);
     }
 
-    public Page<Fattura> findByCliente(UUID id,int pageNumber, int pageSize, String sortBy){
+    public Page<Fattura> findByCliente(UUID id, int pageNumber, int pageSize, String sortBy) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
-        return this.fatturaRepository.findByClienteId(id, pageable);
+        return this.fatturaRepository.findByCliente(id, pageable);
     }
 
-    public Page<Fattura> findByStato(StatoFatturaDTO body, int pageNumber, int pageSize, String sortBy){
+    public Page<Fattura> findByStato(StatoFatturaDTO body, int pageNumber, int pageSize, String sortBy) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         StatoFattura found = this.findStatoByString(body.statoFattura());
-        return this.fatturaRepository.findByStatoFatturaId(found.getId(),pageable);
+        return this.fatturaRepository.findByStato(found.getId(), pageable);
     }
 
-    public Page<Fattura> findByYear(FatturaAnnoDTO body, int pageNumber, int pageSize, String sortBy){
+    public Page<Fattura> findByYear(FatturaAnnoDTO body, int pageNumber, int pageSize, String sortBy) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         LocalDate start = Year.of(body.anno()).atDay(1);
         LocalDate end = Year.of(body.anno()).atMonth(12).atEndOfMonth();
-        return this.fatturaRepository.findByDataBetween(start,end, pageable);
+        return this.fatturaRepository.findByDataBetween(start, end, pageable);
     }
 
-    public Page<Fattura> findByDate(FatturaDataDTO body, int pageNumber, int pageSize, String sortBy){
+    public Page<Fattura> findByDate(FatturaDataDTO body, int pageNumber, int pageSize, String sortBy) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         return this.fatturaRepository.findByData(body.data(), pageable);
     }
 
-    public Page<Fattura> findByRange(FatturaRangeImporti body, int pageNumber, int pageSize, String sortBy)
-    {
+    public Page<Fattura> findByRange(FatturaRangeImporti body, int pageNumber, int pageSize, String sortBy) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
-        if (body.min() > body.max()) throw new BadRequestException("Il valore minimo inserito è maggiore del valore massimo inserito");
-        if (body.min() == body.max()) throw new BadRequestException("Il valore minimo inserito è uguale al valore massimo inserito");
+        if (body.min() > body.max())
+            throw new BadRequestException("Il valore minimo inserito è maggiore del valore massimo inserito");
+        if (body.min() == body.max())
+            throw new BadRequestException("Il valore minimo inserito è uguale al valore massimo inserito");
         return this.fatturaRepository.findByImportoBetween(body.min(), body.max(), pageable);
     }
 
