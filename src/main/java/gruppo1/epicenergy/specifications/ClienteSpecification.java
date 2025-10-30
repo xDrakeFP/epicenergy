@@ -10,11 +10,12 @@ import org.springframework.data.jpa.domain.Specification;
 import java.lang.ref.Cleaner;
 
 public class ClienteSpecification {
+
     public static Specification<Cliente> nameContains(String nome){
-        Specification<Cliente> specification = (root, query, criteriaBuilder) -> {
-            return criteriaBuilder.like(root.get("ragione_sociale"), nome);
-        };
-        return specification;
+        return (root, query, criteriaBuilder) ->
+                ( nome == null || nome.isBlank()) ? null:
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("nome_contatto")),"%" + nome.toLowerCase() + "%");
+
     }
 
 

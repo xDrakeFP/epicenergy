@@ -3,9 +3,11 @@ package gruppo1.epicenergy.controllers;
 import gruppo1.epicenergy.entities.Cliente;
 import gruppo1.epicenergy.payloads.clienti.*;
 import gruppo1.epicenergy.services.ClienteService;
+import gruppo1.epicenergy.specifications.ClienteSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -112,6 +114,14 @@ public class ClientiController {
                 sortBy,
                 direction
         );
+}
+@GetMapping("/search-by")
+    public Specification<Cliente> searchBy(@RequestParam(required = false) String nome,
+                                           @RequestParam(defaultValue = "0") int pageNumber,
+                                           @RequestParam(defaultValue = "10") int pageSize,
+                                           @RequestParam(defaultValue = "nomeContatto") String sortBy,
+                                           @RequestParam(defaultValue = "asc") String direction){
+        return ClienteSpecification.nameContains(nome);
 }
 }
 
