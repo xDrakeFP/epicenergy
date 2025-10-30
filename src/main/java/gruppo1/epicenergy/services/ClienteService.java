@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -132,7 +133,8 @@ public class ClienteService {
         }
     }
 
-    public Page<Cliente> sortBy(String nome, Double fatturato, LocalDate dataInserimento, LocalDate dataUltimoContatto, int pageNumber, int pageSize, String sortBy, String direction) {
+    public Page<Cliente> sortBy(String nome, Double fatturato, LocalDate dataInserimento,
+                                LocalDate dataUltimoContatto, int pageNumber, int pageSize, String sortBy, String direction) {
         Sort sort = direction.equalsIgnoreCase("desc") ?
                 Sort.by(sortBy).descending() :
                 Sort.by(sortBy).ascending();
@@ -153,4 +155,19 @@ public class ClienteService {
         }
         return clienteRepository.findAll(pageable);
     }
+
+    /* public Page<Cliente> sortBy(String nome, Double fatturato, LocalDate dataInserimento,
+                                LocalDate dataUltimoContatto, int pageNumber, int pageSize, String sortBy, String direction){
+        Sort sort = direction.equalsIgnoreCase("desc") ?
+                Sort.by(sortBy).descending() :
+                Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+
+        List<Cliente> results = clienteRepository.findAll(
+                Specification.where((ClienteService.findByNomeContattoContaining(nome)).and(ClienteSpecifications.hasFatturatoGreaterThan(5000))),
+                pageable
+        );
+    }*/
+
+
 }

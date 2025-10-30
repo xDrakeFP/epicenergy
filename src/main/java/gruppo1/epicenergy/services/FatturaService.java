@@ -97,14 +97,14 @@ public class FatturaService {
         return this.fatturaRepository.findByImportoBetween(body.min(), body.max(), pageable);
     }
 
-    public Page<Fattura> sortBy(UUID clienteId, StatoFatturaDTO stato, FatturaAnnoDTO anno, LocalDate data, FatturaRangeImporti importi,
+    public Page<Fattura> sortBy(UUID clienteId, StatoFatturaDTO stato, FatturaAnnoDTO anno, FatturaDataDTO data, FatturaRangeImporti importi,
                                  int pageNumber, int pageSize, String sortBy,  String direction) {
         Sort sort = direction.equalsIgnoreCase("desc") ?
                 Sort.by(sortBy).descending() :
                 Sort.by(sortBy).ascending();
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         if (clienteId!= null) {
-            return this.findByCliente(clienteId, pageable);
+            return this.findByCliente(clienteId, pageNumber,pageSize,sortBy);
         }
         if ( stato != null){
             return findByStato(stato,pageNumber,pageSize,sortBy);

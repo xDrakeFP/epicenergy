@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
+
 @NoArgsConstructor
 @Entity
 public class Cliente {
