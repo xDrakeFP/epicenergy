@@ -26,8 +26,6 @@ public class ClientiController {
 
     @Autowired
     private ClienteService clienteService;
-    @Autowired
-    private ClienteSpecification clienteSpecification;
 
     @GetMapping
     public Page<Cliente> getAll(@RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "10") int pageSize, @RequestParam(defaultValue = "nomeContatto") String sortBy, @RequestParam(defaultValue = "asc") String orderBy) {
@@ -110,8 +108,7 @@ public class ClientiController {
                                                  @RequestParam(defaultValue = "nomeContatto") String sortBy,
                                                  @RequestParam(defaultValue = "asc") String direction){
 
-        Page<Cliente> cliente = clienteService.sortBy(nome, fatturato, dataInserimento, dataUltimoContatto, provincia, pageNumber, pageSize, sortBy,direction);
-
+        Page<Cliente> cliente = clienteService.sortBy(nome, fatturato, dataInserimento, dataUltimoContatto, pageNumber, pageSize, sortBy, direction);
         return ResponseEntity.ok(cliente);
 }
 }

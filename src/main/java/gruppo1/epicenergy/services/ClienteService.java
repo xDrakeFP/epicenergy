@@ -8,12 +8,14 @@ import gruppo1.epicenergy.exceptions.BadRequestException;
 import gruppo1.epicenergy.exceptions.NotFoundException;
 import gruppo1.epicenergy.payloads.clienti.ClienteDTO;
 import gruppo1.epicenergy.repositories.ClienteRepository;
+import gruppo1.epicenergy.specifications.ClienteSpecification;
 import gruppo1.epicenergy.tools.MailGun;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -130,41 +132,40 @@ public class ClienteService {
         }
     }
 
+//    public Page<Cliente> sortBy(String nome, Double fatturato, LocalDate dataInserimento,
+//                                LocalDate dataUltimoContatto, UUID provincia, int pageNumber, int pageSize, String sortBy, String direction) {
+//        Sort sort = direction.equalsIgnoreCase("desc") ?
+//                Sort.by(sortBy).descending() :
+//                Sort.by(sortBy).ascending();
+//
+//        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+//
+//        if (nome != null) {
+//            return clienteRepository.findByNomeContattoContaining(nome, pageable);
+//        }
+//        if (fatturato != null) {
+//            return clienteRepository.findByFatturatoAnnualeGreaterThanEqual(fatturato, pageable);
+//        }
+//        if (dataInserimento != null) {
+//            return clienteRepository.findByDataInserimento(dataInserimento, pageable);
+//        }
+//        if (dataUltimoContatto != null) {
+//            return clienteRepository.findByDataUltimoContatto(dataUltimoContatto, pageable);
+//        }
+//        return clienteRepository.findAll(pageable);
+//    }
+
     public Page<Cliente> sortBy(String nome, Double fatturato, LocalDate dataInserimento,
-                                LocalDate dataUltimoContatto, UUID provincia, int pageNumber, int pageSize, String sortBy, String direction) {
-        Sort sort = direction.equalsIgnoreCase("desc") ?
-                Sort.by(sortBy).descending() :
-                Sort.by(sortBy).ascending();
-
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-
-        if (nome != null) {
-            return clienteRepository.findByNomeContattoContaining(nome, pageable);
-        }
-        if (fatturato != null) {
-            return clienteRepository.findByFatturatoAnnualeGreaterThanEqual(fatturato, pageable);
-        }
-        if (dataInserimento != null) {
-            return clienteRepository.findByDataInserimento(dataInserimento, pageable);
-        }
-        if (dataUltimoContatto != null) {
-            return clienteRepository.findByDataUltimoContatto(dataUltimoContatto, pageable);
-        }
-        return clienteRepository.findAll(pageable);
-    }
-
-    /* public Page<Cliente> sortBy(String nome, Double fatturato, LocalDate dataInserimento,
                                 LocalDate dataUltimoContatto, int pageNumber, int pageSize, String sortBy, String direction){
         Sort sort = direction.equalsIgnoreCase("desc") ?
                 Sort.by(sortBy).descending() :
                 Sort.by(sortBy).ascending();
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
-        List<Cliente> results = clienteRepository.findAll(
-                Specification.where((ClienteService.findByNomeContattoContaining(nome)).and(ClienteSpecifications.hasFatturatoGreaterThan(5000))),
+        return clienteRepository.findAll(
+                Specification.anyOf(ClienteSpecification.nameContains(nome)).and(ClienteSpecification.fatturatoAnnuo(fatturato))
+                        .and(ClienteSpecification.dataInserimentoDb(dataInserimento)).and(ClienteSpecification.dataUltimoContattoDb(dataUltimoContatto)),
                 pageable
         );
-    }*/
-
-
+    }
 }

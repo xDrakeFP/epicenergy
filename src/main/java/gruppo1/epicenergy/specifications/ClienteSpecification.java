@@ -19,7 +19,6 @@ public class ClienteSpecification {
         return (root, query, criteriaBuilder) ->
                 ( nome == null || nome.isBlank()) ? null:
                         criteriaBuilder.like(criteriaBuilder.lower(root.get("ragioneSociale")),"%" + nome.toLowerCase() + "%");
-
     }
 
     public static Specification<Cliente> dataInserimentoDb(LocalDate data){
