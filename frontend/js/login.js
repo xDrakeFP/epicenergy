@@ -3,7 +3,12 @@ const API_BASE_URL = "http://localhost:3001";
 
 // Credenziali di test
 const TEST_CREDENTIALS = {
-  admin: { password: "admin123", role: "ADMIN", token: "admin-token-123" },
+  admin: {
+    password: "admin123",
+    role: "ADMIN",
+    token:
+      "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NjE4NDA3OTEsImV4cCI6MTc2MjQ0NTU5MSwic3ViIjoiYWIzOWJkZjYtNmZjMi00ZDZjLWEyMjMtMjQxYjdjNDg3MzIyIn0.DGfvN1TFQRG6q5X9fpj-UKAT1Fngg-Vs_h-6pfM84WQ",
+  },
   user: { password: "user123", role: "USER", token: "user-token-456" },
 };
 

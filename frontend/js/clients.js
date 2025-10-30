@@ -41,7 +41,7 @@ async function loadClients() {
   try {
     const token = localStorage.getItem("token");
     const response = await fetch(
-      `${API_BASE_URL}/api/clienti?page=${currentPage}&size=${pageSize}`,
+      `${API_BASE_URL}/client?page=${currentPage}&size=${pageSize}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
