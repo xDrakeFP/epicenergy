@@ -52,7 +52,7 @@ public class UtenteService {
     }
 
     //MODIFICA UTENTE TODO: SOLO ADMIN E "UTENTE LOGGATO" POSSONON MODIFICARE
-    public Utente findByIdAndUpdate(UUID id, NewUtenteDTO body) {
+    public Utente findByIdAndUpdate(UUID id, UtenteDTO body) {
         Utente utenteTrovato = findById(id);
         utenteTrovato.setUsername(body.username());
         utenteTrovato.setEmail(body.email());

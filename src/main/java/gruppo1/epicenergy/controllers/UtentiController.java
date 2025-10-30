@@ -1,6 +1,7 @@
 package gruppo1.epicenergy.controllers;
 
 import gruppo1.epicenergy.entities.Utente;
+import gruppo1.epicenergy.payloads.auth.UtenteDTO;
 import gruppo1.epicenergy.payloads.clienti.ClienteDTO;
 import gruppo1.epicenergy.payloads.utenti.NewUtenteDTO;
 import gruppo1.epicenergy.services.UtenteService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,7 +39,7 @@ public class UtentiController {
     }
 
     @PutMapping("/{id}")
-    public Utente update(@PathVariable UUID id, @RequestBody NewUtenteDTO body) {
+    public Utente update(@PathVariable UUID id, @RequestBody UtenteDTO body) {
         return utenteService.findByIdAndUpdate(id, body);
 
     }
@@ -47,4 +49,20 @@ public class UtentiController {
         return utenteService.uploadAvatar(id, file);
 
     }
+
+    @GetMapping("/me")
+    public Utente getMeUtente(@AuthenticationPrincipal Utente dipendenteLoggato) {
+        return dipendenteLoggato;
+    }
+
+    @PutMapping("/me")
+    public Utente updateMeUtente(@AuthenticationPrincipal Utente dipendenteLoggato, @RequestBody UtenteDTO body) {
+        return utenteService.findByIdAndUpdate(dipendenteLoggato.getId(), body);
+    }
+
+    @DeleteMapping("/me")
+    public void updateMeUtente(@AuthenticationPrincipal Utente dipendenteLoggato) {
+        utenteService.findByIdAndDelete(dipendenteLoggato.getId());
+    }
+
 }
