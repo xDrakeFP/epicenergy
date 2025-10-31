@@ -28,17 +28,17 @@ public class ClienteSpecification {
 
     public static Specification<Cliente> dataInserimentoDb(LocalDate data){
         return (root, query, criteriaBuilder) ->
-                data == null? null : criteriaBuilder.lessThan(root.get("dataInserimento"), data);
+                data == null? null : criteriaBuilder.lessThanOrEqualTo(root.get("dataInserimento"), data);
     }
 
     public static Specification<Cliente> dataUltimoContattoDb(LocalDate data){
         return (root, query, criteriaBuilder) ->
-                data == null? null : criteriaBuilder.lessThan(root.get("dataUltimoContatto"), data);
+                data == null? null : criteriaBuilder.lessThanOrEqualTo(root.get("dataUltimoContatto"), data);
     }
 
     public static Specification<Cliente> fatturatoAnnuo(Double fatturato){
         return (root, query, criteriaBuilder) ->
-        fatturato == null? null: criteriaBuilder.lessThan(root.get("fatturatoAnnuale"), fatturato);
+        fatturato == null? null: criteriaBuilder.lessThanOrEqualTo(root.get("fatturatoAnnuale"), fatturato);
     }
 
      public Specification<Cliente> provinciaSedeLegale(UUID provincia){

@@ -1,50 +1,35 @@
 <!DOCTYPE html>
 <html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="./css/icons8-fulmine-16.png" />
-    <title>EpicEnergy - Login</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <div class="login-form">
-        <div class="logo">
-          <h1>EpicEnergy services</h1>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" type="image/png" href="./css/icons8-fulmine-16.png" />
+        <title>EpicEnergy - Login</title>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="login-form">
+                <div class="logo">
+                    <h1>EpicEnergy services</h1>
+                </div>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <input type="text" id="email" placeholder="Username" required />
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password" id="password" placeholder="Password" required />
+                    </div>
+
+                    <button type="submit" class="login-btn">Accedi</button>
+                </form>
+
+                <div id="error-message" class="error-message" style="display: none"></div>
+            </div>
         </div>
 
-        <form id="loginForm">
-          <div class="form-group">
-            <input type="text" id="email" placeholder="Username" required />
-          </div>
-
-          <div class="form-group">
-            <input
-              type="password"
-              id="password"
-              placeholder="Password"
-              required
-            />
-          </div>
-
-          <button type="submit" class="login-btn">Accedi</button>
-        </form>
-
-        <div class="test-credentials">
-          <h3>Credenziali di Test</h3>
-          <div class="cred-row"><strong>Admin:</strong> admin / admin123</div>
-          <div class="cred-row"><strong>User:</strong> user / user123</div>
-        </div>
-
-        <div
-          id="error-message"
-          class="error-message"
-          style="display: none"
-        ></div>
-      </div>
-    </div>
-
-    <script src="js/login.js"></script>
-  </body>
+        <script src="js/login.js"></script>
+    </body>
 </html>

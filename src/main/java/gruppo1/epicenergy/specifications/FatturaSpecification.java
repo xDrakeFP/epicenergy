@@ -30,13 +30,8 @@ public class FatturaSpecification {
     public static Specification<Fattura> fatturaStato(UUID idStato){
         return (root, query, criteriaBuilder) ->{
             if (idStato == null) return null;
-            return criteriaBuilder.equal(criteriaBuilder.lower(root.get("stato").get("id")), idStato );
+            return criteriaBuilder.equal(root.get("stato").get("id"), idStato );
         };
-    }
-
-    public static Specification<Fattura> dataFattura(LocalDate data){
-        return (root, query, criteriaBuilder) ->
-                data == null? null : criteriaBuilder.lessThan(root.get("data"), data);
     }
 
     public static Specification<Fattura> findPerAnno(LocalDate data){

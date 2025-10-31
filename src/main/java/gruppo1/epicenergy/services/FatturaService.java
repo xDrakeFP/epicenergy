@@ -108,7 +108,7 @@ public class FatturaService {
 
         return fatturaRepository.findAll(
                 Specification.anyOf(FatturaSpecification.clientIs(cliente)).and(FatturaSpecification.fatturaStato(idStato))
-                        .and(FatturaSpecification.dataFattura(data)).and(FatturaSpecification.findPerAnno(data)).and(FatturaSpecification.findPerRange(min, max)),
+                        .and(FatturaSpecification.findPerAnno(data)).and(FatturaSpecification.findPerRange(min, max)),
                 pageable
         );
     }

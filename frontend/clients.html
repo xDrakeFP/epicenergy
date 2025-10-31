@@ -1,59 +1,58 @@
 <!DOCTYPE html>
 <html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="./css/icons8-fulmine-16.png" />
-    <title>EpicEnergy - Clienti</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <nav class="navbar">
-      <div class="nav-container">
-        <div class="nav-logo">
-          <h2>EpicEnergy</h2>
-        </div>
-        <div class="nav-menu">
-          <a href="clients.html" class="nav-link active">Clienti</a>
-          <a href="fatture.html" class="nav-link">Fatture</a>
-          <div id="nome-utente"></div>
-          <button id="logout-btn" class="logout-btn">Logout</button>
-        </div>
-      </div>
-    </nav>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" type="image/png" href="./css/icons8-fulmine-16.png" />
+        <title>EpicEnergy - Clienti</title>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <h2>EpicEnergy</h2>
+                </div>
+                <div class="nav-menu">
+                    <a href="clients.html" class="nav-link active">Clienti</a>
+                    <a href="fatture.html" class="nav-link">Fatture</a>
+                    <div id="nome-utente"></div>
+                    <button id="logout-btn" class="logout-btn">Logout</button>
+                </div>
+            </div>
+        </nav>
 
-    <div class="container">
-      <div class="header">
-        <h1>Gestione Clienti</h1>
-      </div>
+        <div class="container">
+            <div class="header">
+                <h1>Gestione Clienti</h1>
+            </div>
 
-      <div class="content">
-        <div class="table-container">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Logo</th>
-                <th>Nome Contatto</th>
-                <th>Ragione Sociale</th>
-                <th>Email</th>
-                <th>Telefono</th>
-                <th>Tipo Cliente</th>
-                <th>Fatturato Annuale</th>
-                <th>Azioni</th>
-              </tr>
-            </thead>
-            <tbody id="clients-tbody"></tbody>
-          </table>
+            <div class="content">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Logo</th>
+                                <th>Nome Contatto</th>
+                                <th>Ragione Sociale</th>
+                                <th>Email</th>
+                                <th>Telefono</th>
+                                <th>Tipo Cliente</th>
+                                <th>Fatturato Annuale</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clients-tbody"></tbody>
+                    </table>
+                </div>
+
+                <div class="pagination">
+                    <button id="prev-btn" class="pagination-btn">Precedente</button>
+                    <span id="page-info">Pagina 1</span>
+                    <button id="next-btn" class="pagination-btn">Successiva</button>
+                </div>
+            </div>
         </div>
 
-        <div class="pagination">
-          <button id="prev-btn" class="pagination-btn">Precedente</button>
-          <span id="page-info">Pagina 1</span>
-          <button id="next-btn" class="pagination-btn">Successiva</button>
-        </div>
-      </div>
-    </div>
-
-    <script src="js/clients.js"></script>
-  </body>
+        <script src="js/clients.js"></script>
+    </body>
 </html>

@@ -93,7 +93,7 @@ public class FattureController {
                                                  @RequestParam(required = false) Double max,
                                                  @RequestParam(defaultValue = "0") int pageNumber,
                                                  @RequestParam(defaultValue = "10") int pageSize,
-                                                 @RequestParam(defaultValue = "nomeContatto") String sortBy,
+                                                 @RequestParam(defaultValue = "cliente") String sortBy,
                                                  @RequestParam(defaultValue = "asc") String direction){
 
         Page<Fattura> fatture = service.sortBy(cliente,idStato,data,min,max, pageNumber, pageSize, sortBy, direction);
