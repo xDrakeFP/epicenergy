@@ -98,9 +98,9 @@ function displayClients(clienti) {
           : "0"
       }</td>
       <td>
-        <button onclick="viewClient(${cliente.id})" class="btn-action btn-view">
+        <button onclick="viewClient${cliente.id}" class="btn-action btn-view ">
           Dettagli
-        </button>
+        </button >
       </td>
     </tr>
   `

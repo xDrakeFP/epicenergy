@@ -42,7 +42,7 @@ async function loadInvoices() {
     const urlParams = new URLSearchParams(window.location.search);
     const clientId = urlParams.get("clientId");
 
-    let url = `${API_BASE_URL}/api/fatture?page=${currentPage}&size=${pageSize}`;
+    let url = `${API_BASE_URL}/fatture?page=${currentPage}&size=${pageSize}`;
     if (clientId) {
       url += `&clienteId=${clientId}`;
     }
@@ -55,6 +55,7 @@ async function loadInvoices() {
 
     if (response.ok) {
       const data = await response.json();
+
       displayInvoices(data.content || []);
       updatePagination(data);
     } else {
@@ -89,8 +90,8 @@ function displayInvoices(fatture) {
       <td>${formatDate(fattura.data)}</td>
       <td>€${fattura.importo ? fattura.importo.toLocaleString() : "0"}</td>
       <td>
-        <span class="status-badge ${getStatusClass(fattura.stato)}">
-          ${fattura.stato || "N/A"}
+        <span class="status-badge ">
+          ${getStatusClass(fattura.stato) || "N/A"}
         </span>
       </td>
     </tr>
@@ -107,8 +108,8 @@ function formatDate(dateString) {
 }
 
 function getStatusClass(stato) {
-  if (!stato) return "";
-  return stato.toLowerCase().replace(/\s+/g, "-");
+  if (!stato) return "N/D";
+  return stato.statoStr;
 }
 
 function updatePagination(data) {

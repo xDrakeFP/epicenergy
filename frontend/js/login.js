@@ -76,8 +76,8 @@ async function handleLogin(e) {
 
         if (response.ok) {
           const data = await response.json();
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("role", "USER");
+          localStorage.setItem("token", data.accessToken);
+          localStorage.setItem("role", "ADMIN");
           localStorage.setItem("username", email);
           window.location.href = "clients.html";
         } else {
