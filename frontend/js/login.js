@@ -76,6 +76,7 @@ async function handleLogin(e) {
 
         if (response.ok) {
           const data = await response.json();
+
           localStorage.setItem("token", data.accessToken);
           localStorage.setItem("role", "ADMIN");
           localStorage.setItem("username", email);

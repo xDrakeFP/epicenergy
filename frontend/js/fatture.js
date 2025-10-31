@@ -11,6 +11,11 @@ const fattureTable = document.getElementById("fatture-tbody");
 const prevBtn = document.getElementById("prev-btn");
 const nextBtn = document.getElementById("next-btn");
 const pageInfo = document.getElementById("page-info");
+const nomeUtente = document.getElementById("nome-utente");
+
+nomeUtente.innerHTML = `<p style="font-size:1.3rem" > Ciao, <span style= font-weight:bolder; >${localStorage.getItem(
+  "username"
+)}</span> </p>`;
 
 // Event listeners
 document.addEventListener("DOMContentLoaded", init);
